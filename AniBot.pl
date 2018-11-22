@@ -50,10 +50,16 @@ ordenarRating(X, Z):- findall(A,generoAnime(A,X),A),
                       findall(A3, rating(A3,3),A3), member(A3,A), concat(Z2,A3,Z3),
                       findall(A4, rating(A4,4),A4), member(A4,A), concat(Z3,A4,Z4),
                       findall(A5, rating(A5,5),A5), member(A5,A), concat(Z4,A5,Z).
+*/
 
+%
+/*
 Poder mostar los animés con X número de estrellas dentro de cierto género (el género es
 un estado del chatbot que se debe conocer).
 */
-estrellas(X,Y):- findall(Y,rating(Y,X), l1), findall(Z,generoAnime(Z,Y), l2).
+estrellas(X,Y):- findall(L,rating(L,X),L), findall(A,generoAnime(A,Y),A), interseccion(L,A,W), imprimir(W).
 
-%pertenece([X|Xs],[Y|Ys], Z):- member(X,[Y|Ys]).
+% Funcion que hace la interseccion de dos listas.
+interseccion([], _, []).
+interseccion([A|As], Bs, [A|Cs]):- member(A, Bs), !, interseccion(As, Bs, Cs).
+interseccion([_|As], Bs, Cs):- interseccion(As, Bs, Cs).
