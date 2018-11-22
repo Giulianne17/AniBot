@@ -41,9 +41,10 @@ imprimir([X|L]) :- writeln(X), imprimir(L).
 orderBy(popularidad) :- findall((Y,X),popularidad(Y,X), L), sort(2,@=<, L, Sorted), imprimir(Sorted).
 
 % Funcion que concatena dos listas.
-/*concat([], X, X).
+concat([], X, X).
 concat([Y|YS], X, [Y|Z]) :- concat(YS, X, Z).
-
+%
+/*
 ordenarRating(X, Z):- findall(A,generoAnime(A,X),A),
                       findall(A1, rating(A1,1),A1), member(A1,A), concat([],A1,Z1),
                       findall(A2, rating(A2,2),A2), member(A2,A), concat(Z1,A2,Z2),
@@ -63,3 +64,13 @@ estrellas(X,Y):- findall(L,rating(L,X),L), findall(A,generoAnime(A,Y),A), inters
 interseccion([], _, []).
 interseccion([A|As], Bs, [A|Cs]):- member(A, Bs), !, interseccion(As, Bs, Cs).
 interseccion([_|As], Bs, Cs):- interseccion(As, Bs, Cs).
+
+/*
+Poder mostrar los animés buenos poco conocidos. Aquí se hace referencia a rating alto
+con popularidad baja.
+*/
+pocoConocidos():- findall(L,rating(L,5),L), findall(M,rating(M,4),M), concat(L, M, Z),
+                  findall(N,popularidad(N,1),N), findall(O,popularidad(O,2),O), concat(N, O, A),
+                  findall(P,popularidad(P,3),P), findall(Q,popularidad(Q,4),Q), concat(P,Q, B),
+                  findall(R,popularidad(R,5),R), concat(A,B,C), concat(C,R,D), 
+                  interseccion(Z,D,F), imprimir(F). 
