@@ -1,8 +1,10 @@
+:- dynamic anime/1.
 anime(X) :- member(X,["Dragon Ball", "Naruto", "Bleach", "HunterXHunter", "Hamtaro", "Full Metal Alchemist"]).
 
 genero(X) :- member(X,["Aventura", "Shoujo", "Shounen", "Kodomo", "Seinen", "Josei", "Ficción",
                     "Fantasía", "Mecha", "Sobrenatural", "Magia", "Gore"]).
 
+:- dynamic generoAnime/2.
 generoAnime("Naruto",["Shounen","Aventura"]).
 generoAnime("Dragon Ball",["Shounen"]).
 generoAnime("Bleach",["Shounen", "Sobrenatural"]).
@@ -10,6 +12,7 @@ generoAnime("HunterXHunter",["Seinen", "Aventura"]).
 generoAnime("Hamtaro",["Kodomo"]).
 generoAnime("Full Metal Alchemist",["Shounen", "Magia"]).
 
+:- dynamic rating/2.
 rating("Dragon Ball",3).
 rating("Naruto",1).
 rating("Bleach",4).
@@ -17,6 +20,7 @@ rating("HunterXHunter",5).
 rating("Hamtaro",2).
 rating("Full Metal Alchemist",4).
 
+:- dynamic popularidad/2.
 popularidad("Dragon Ball",7).
 popularidad("Naruto",5).
 popularidad("Bleach",8).
@@ -103,3 +107,9 @@ pocoConocidos():- findall(L,rating(L,5),L), findall(M,rating(M,4),M), concat(L, 
                   findall(P,popularidad(P,3),P), findall(Q,popularidad(Q,4),Q), concat(P,Q, B),
                   findall(R,popularidad(R,5),R), concat(A,B,C), concat(C,R,D), 
                   interseccion(Z,D,F), imprimir(F). 
+
+/*
+Poder agregar a la base de datos un anime con su género y rating, si no está en la misma.
+La popularidad es opcional especificarla al agregarlo y por defecto es 1.
+*/
+agregar(A,G,R,P):- not(member(A,anime(_))), assert(anime(A)), assertz(generoAnime(A,G)),assertz(rating(A,R)), assertz(popularidad(A,P)).
