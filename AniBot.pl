@@ -29,8 +29,37 @@ popularidad("Full Metal Alchemist",1).
 pregunte el usuario, por defecto de mayor a menor. En caso de que se pregunte por ambos
 se suma el rating y popularidad y se ordena según el resultado. */
 
-% Realiza el query sobre el rating de todos los anime y los imprime en orden ascendente
-orderBy(rating,Z) :- findall((Y,X),rating(Y,X), L), sort(2,@=<, L,  Sorted),findall(A,generoAnime(A,Z),A),  imprimir(Sorted).
+found(_,_,[],[]).
+found(A,X,[X|_],[A]).
+found(A,X,[_|Xs],Z):- found(A,X,Xs,Z).
+
+foundGenre(_,[],[]).
+foundGenre(Genre,[(A,B)|Xs], D) :- foundGenre(Genre,Xs,C), found(A,Genre,B,Z) ,append(Z,C,D).
+
+foundAnime(_,[],[]).
+foundAnime(A,[(A,B)|_], [(A,B)]).
+foundAnime(A,[_|Pares], As):- foundAnime(A, Pares, As).
+
+loopAnime([],_,[]).
+loopAnime([X|Xs],List2,List3):- foundAnime(X, List2, ListA), loopAnime(Xs, List2, ListB), append(ListA, ListB, List3).
+
+% Realiza el query sobre el rating de todos los anime de genero G y los imprime en orden ascendente
+orderBy(rating,G) :- 
+    findall((Y,X),rating(Y,X), L),              % L tiene una lista de pares (Anime, Rating)
+    findall((A,List),generoAnime(A,List),As),   % As tiene una lista de pares (Anime, ListaGeneros)
+    foundGenre(G,As,ListGenre),                 % ListGenre tiene una lista de Animes que son del genero G
+    loopAnime(ListGenre,L,GenreRating),         % GenreRating tiene una lista de pares (Anime, Rating) donde Anime es del genero G
+    sort(2,@=<, GenreRating, Sorted),           % Sorted es la lista GenreRating ordenada por Rating de forma ascendente
+    imprimir(Sorted).
+
+% Realiza el query sobre la popularidad de todos los anime de genero G y los imprime en orden ascendente
+orderBy(popularidad,G) :- 
+    findall((Y,X),popularidad(Y,X), L),         % L tiene una lista de pares (Anime, Popularidad)
+    findall((A,List),generoAnime(A,List),As),   % As tiene una lista de pares (Anime, ListaGeneros)
+    foundGenre(G,As,ListGenre),                 % ListGenre tiene una lista de Animes que son del genero G
+    loopAnime(ListGenre,L,GenrePopular),        % GenrePopular tiene una lista de pares (Anime, Popularidad) donde Anime es del genero G
+    sort(2,@=<, GenrePopular, Sorted),          % Sorted es la lista GenrePopular ordenada por Popularidad de forma ascendente
+    imprimir(Sorted).
 
 
 % Dado un arreglo imprime cada elemento en una linea
