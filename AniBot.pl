@@ -343,6 +343,64 @@ mensajes([ver,contador, _|_]):- findall((X,Y), contador(X,Y), L), imprimir(L), n
 mensajes([ver,popularidad]):- findall((X,Y), popularidad(X,Y), L), imprimir(L), nl, readln(W), nl, mensajes(W).
 mensajes([ver,popularidad,_|_]):- findall((X,Y), popularidad(X,Y), L), imprimir(L), nl, readln(W), nl, mensajes(W).
 
+/* Permite ver los generos */
+mensajes([ver,generos]):- findall(X, genero(X), X), imprimir(X), nl, readln(W), nl, mensajes(W).
+
+/* Preguntas extras */
+mensajes([cuales, son, los, mejores, ratings]):- 
+    writeln("Estos tienen 5 estrellas:"), findall(X,rating(X,5),X), nl, readln(W), nl, mensajes(W).
+mensajes([cuales, son, los, mejores, ratings,_|_]):- 
+    writeln("Estos tienen 5 estrellas:"), findall(X,rating(X,5),X), nl, readln(W), nl, mensajes(W).
+mensajes([cuales, son, los, bastante, conocidos]):- 
+    findall(X,popularidad(X,10),X),imprimir(X), nl, readln(W), nl, mensajes(W).
+mensajes([cuales, son, los, bastante, conocidos,_|_]):- 
+    findall(X,popularidad(X,10),X),imprimir(X), nl, readln(W), nl, mensajes(W).
+mensajes([cuales, son, los, muy, conocidos]):- 
+    findall(X,popularidad(X,9),X),findall(Y,popularidad(Y,8),Y), concat(Y,X,L), imprimir(L), nl, readln(W), nl, mensajes(W).
+mensajes([cuales, son, los, muy, conocidos,_|_]):- 
+    findall(X,popularidad(X,9),X),findall(Y,popularidad(Y,8),Y), concat(Y,X,L), imprimir(L), nl, readln(W), nl, mensajes(W).
+mensajes([cuales, son, los, conocidos]):- 
+    findall(X,popularidad(X,6),X),findall(Y,popularidad(Y,7),Y), concat(Y,X,L), imprimir(L), nl, readln(W), nl, mensajes(W).
+mensajes([cuales, son, los, conocidos,_|_]):- 
+    findall(X,popularidad(X,6),X),findall(Y,popularidad(Y,7),Y), concat(Y,X,L), imprimir(L), nl, readln(W), nl, mensajes(W).
+mensajes([cuales, son, los,muy,poco, conocidos]):- 
+    findall(X,popularidad(X,1),X),findall(Y,popularidad(Y,2),Y), concat(Y,X,L), imprimir(L), nl, readln(W), nl, mensajes(W).
+mensajes([cuales, son, los,muy,poco, conocidos,_|_]):- 
+    findall(X,popularidad(X,1),X),findall(Y,popularidad(Y,2),Y), concat(Y,X,L), imprimir(L), nl, readln(W), nl, mensajes(W).
+
+mensajes([dime, los, mejores, ratings]):- 
+    writeln("Estos tienen 5 estrellas:"), findall(X,rating(X,5),X), nl, readln(W), nl, mensajes(W).
+mensajes([dime, los, mejores, ratings,_|_]):- 
+    writeln("Estos tienen 5 estrellas:"), findall(X,rating(X,5),X), nl, readln(W), nl, mensajes(W).
+mensajes([dime, los, bastante, conocidos]):- 
+    findall(X,popularidad(X,10),X),imprimir(X), nl, readln(W), nl, mensajes(W).
+mensajes([dime, los, bastante, conocidos,_|_]):- 
+    findall(X,popularidad(X,10),X),imprimir(X), nl, readln(W), nl, mensajes(W).
+mensajes([dime, los, muy, conocidos]):- 
+    findall(X,popularidad(X,9),X),findall(Y,popularidad(Y,8),Y), concat(Y,X,L), imprimir(L), nl, readln(W), nl, mensajes(W).
+mensajes([dime, los, muy, conocidos,_|_]):- 
+    findall(X,popularidad(X,9),X),findall(Y,popularidad(Y,8),Y), concat(Y,X,L), imprimir(L), nl, readln(W), nl, mensajes(W).
+mensajes([dime, los, conocidos]):- 
+    findall(X,popularidad(X,6),X),findall(Y,popularidad(Y,7),Y), concat(Y,X,L), imprimir(L), nl, readln(W), nl, mensajes(W).
+mensajes([dime, los, conocidos,_|_]):- 
+    findall(X,popularidad(X,6),X),findall(Y,popularidad(Y,7),Y), concat(Y,X,L), imprimir(L), nl, readln(W), nl, mensajes(W).
+mensajes([dime, los,muy,poco, conocidos]):- 
+    findall(X,popularidad(X,1),X),findall(Y,popularidad(Y,2),Y), concat(Y,X,L), imprimir(L), nl, readln(W), nl, mensajes(W).
+mensajes([dime, los,muy,poco, conocidos,_|_]):- 
+    findall(X,popularidad(X,1),X),findall(Y,popularidad(Y,2),Y), concat(Y,X,L), imprimir(L), nl, readln(W), nl, mensajes(W).
+
+/*
+mensajes([me, gusta,el,G]):- 
+    generoValido(G, NewG), writeln("Te recomiendo:"),findall((A,Y),generoAnime(A,Y),AnimeWithGenre), 
+    foundGenre(NewG, AnimeWithGenre, SpecificAnime),imprimir(SpecificAnime), nl, readln(W), nl, mensajes(W).
+mensajes([me, gusta,el,genero, G]):- 
+    generoValido(G, NewG), writeln("Te recomiendo:"),findall((A,Y),generoAnime(A,Y),AnimeWithGenre), 
+    foundGenre(NewG, AnimeWithGenre, SpecificAnime),imprimir(SpecificAnime), nl, readln(W), nl, mensajes(W).
+mensajes([el, el,genero,que, mas, me, gusta, es, G]):- 
+    generoValido(G, NewG), writeln("Te recomiendo:"),findall((A,Y),generoAnime(A,Y),AnimeWithGenre), 
+    foundGenre(NewG, AnimeWithGenre, SpecificAnime),imprimir(SpecificAnime), nl, readln(W), nl, mensajes(W).
+*/
+
 /* Para finalizar el chatbot. */
 mensajes([salir]).
 
