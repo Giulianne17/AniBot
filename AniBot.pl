@@ -119,6 +119,22 @@ interseccion(_, [],[]).
 interseccion([A|As], Bs, [A|Cs]):- member(A, Bs), !, interseccion(As, Bs, Cs).
 interseccion([_|As], Bs, Cs):- interseccion(As, Bs, Cs).
 
+
+cambiarGenero(aventura, "Aventura").
+cambiarGenero(shoujo, "Shoujo").
+cambiarGenero(shounen, "Shounen").
+cambiarGenero(kodomo, "Kodomo").
+cambiarGenero(seinen, "Seinen").
+cambiarGenero(josei, "Josei"). 
+cambiarGenero(ficcion, "Ficcion").
+cambiarGenero(fantasia, "Fantasia").
+cambiarGenero(mecha, "Mecha").
+cambiarGenero(sobrenatural, "Sobrenatural").
+cambiarGenero(magia, "Magia").
+cambiarGenero(gore, "Gore").
+
+generoValido(G, NewG):- cambiarGenero(G, NewG), findall(Genero, genero(Genero), Generos), member(NewG,Generos).
+
 /*
 Poder mostrar los animés buenos poco conocidos. Aquí se hace referencia a rating alto
 con popularidad baja.
@@ -159,71 +175,46 @@ inicio :- write('Esto es AniBot, un chatbot que te recomendará sobre Animes.'),
 
 mensajes([start]) :- write('Pregunte lo que desee consultar'),nl, readln(X), nl, mensajes(X).
 
+% Preguntas sobre el orden segun rating.
+
+mensajes([dime,los, animes, del, genero, G, ordenados, de, forma, ascendente, segun, rating ]):- 
+    generoValido(G, NewG), orderBy(rating,NewG,@=<), nl, readln(Y), nl, mensajes(Y).
+mensajes([dime,los, animes, del, genero, G, ordenados, de, forma, descendente, segun, rating ]):- 
+    generoValido(G, NewG), orderBy(rating,NewG,@>=), nl, readln(Y), nl, mensajes(Y).
+
+% Preguntas sobre el orden segun popularidad.
+
+mensajes([dime,los, animes, del, genero, G, ordenados, de, forma, ascendente, segun, popularidad ]):- 
+    generoValido(G, NewG), orderBy(popularidad,NewG,@=<), nl, readln(Y), nl, mensajes(Y).
+mensajes([dime,los, animes, del, genero, G, ordenados, de, forma, descendente, segun, popularidad ]):- 
+    generoValido(G, NewG), orderBy(popularidad,NewG,@>=), nl, readln(Y), nl, mensajes(Y).
+
+% Preguntas sobre el orden segun popularidad y rating.
+
+mensajes([dime,los, animes, del, genero, G, ordenados, de, forma, ascendente, segun, popularidad, y, rating]):- 
+    generoValido(G, NewG), orderBy(both,NewG,@=<), nl, readln(Y), nl, mensajes(Y).
+mensajes([dime,los, animes, del, genero, G, ordenados, de, forma, descendente, segun, popularidad, y, rating]):- 
+    generoValido(G, NewG), orderBy(both,NewG,@>=), nl, readln(Y), nl, mensajes(Y).
+
 % Preguntas sobre los animes con X número de estrellas dentro de cierto género.
 
-%Formato 1, Shounen.
-mensajes([cuales, son, los, animes, con, X, estrellas, del, genero, shounen ]):- 
-    number(X), X>0, X<6, estrellas(X,"Shounen"), nl, readln(Y), nl, mensajes(Y).
+% Formato valido
+mensajes([cuales, son, los, animes, con, X, estrellas, del, genero, G]):- 
+    generoValido(G, NewG), number(X), X>0, X<6, estrellas(X,NewG), nl, readln(Y), nl, mensajes(Y).
 
-%Formato 1, Aventura.
-mensajes([cuales, son, los, animes, con, X, estrellas, del, genero, aventura ]):- 
-    number(X), X>0, X<6, estrellas(X,"Aventura"), nl, readln(Y), nl, mensajes(Y).
-
-%Formato 1, Shoujo.
-mensajes([cuales, son, los, animes, con, X, estrellas, del, genero, shoujo ]):- 
-    number(X), X>0, X<6, estrellas(X,"Shoujo"), nl, readln(Y), nl, mensajes(Y).
-
-%Formato 1, Kodomo.
-mensajes([cuales, son, los, animes, con, X, estrellas, del, genero, kodomo ]):- 
-    number(X), X>0, X<6, estrellas(X,"Kodomo"), nl, readln(Y), nl, mensajes(Y).
-
-%Formato 1, Seinen.
-mensajes([cuales, son, los, animes, con, X, estrellas, del, genero, seinen ]):- 
-    number(X), X>0, X<6, estrellas(X,"Seinen"), nl, readln(Y), nl, mensajes(Y).
-
-%Formato 1, Josei.
-mensajes([cuales, son, los, animes, con, X, estrellas, del, genero, josei ]):- 
-    number(X), X>0, X<6, estrellas(X,"Josei"), nl, readln(Y), nl, mensajes(Y).
-
-%Formato 1, Ficción.
-mensajes([cuales, son, los, animes, con, X, estrellas, del, genero, ficcion ]):- 
-    number(X), X>0, X<6, estrellas(X,"Ficcion"), nl, readln(Y), nl, mensajes(Y).
-
-%Formato 1, Fantasía.
-mensajes([cuales, son, los, animes, con, X, estrellas, del, genero, fantasia ]):- 
-    number(X), X>0, X<6, estrellas(X,"Fantasia"), nl, readln(Y), nl, mensajes(Y).
-
-%Formato 1, Mecha.
-mensajes([cuales, son, los, animes, con, X, estrellas, del, genero, mecha ]):- 
-    number(X), X>0, X<6, estrellas(X,"Mecha"), nl, readln(Y), nl, mensajes(Y).
-
-%Formato 1, Sobrenatural.
-mensajes([cuales, son, los, animes, con, X, estrellas, del, genero, sobrenatural ]):- 
-    number(X), X>0, X<6, estrellas(X,"Sobrenatural"), nl, readln(Y), nl, mensajes(Y).
-
-%Formato 1, Magia.
-mensajes([cuales, son, los, animes, con, X, estrellas, del, genero, magia ]):- 
-    number(X), X>0, X<6, estrellas(X,"Magia"), nl, readln(Y), nl, mensajes(Y).
-
-%Formato 1, Gore.
-mensajes([cuales, son, los, animes, con, X, estrellas, del, genero, gore ]):- 
-    number(X), X>0, X<6, estrellas(X,"Gore"), nl, readln(Y), nl, mensajes(Y).
-
-%Formato 1, Otro.
+% Formato genero invalido.
 mensajes([cuales, son, los, animes, con, X, estrellas, del, genero, _]):- 
     number(X), X>0, X<6, writeln("No conozco ese genero. Intenta con alguno de estos:"), nl,
     findall(G, genero(G), Generos), imprimir(Generos), nl, readln(Y), nl, mensajes(Y).
 
-%Formato 1, Error de numero.
+% Formato error de numero.
 mensajes([cuales, son, los, animes, con, X, estrellas, del, genero, _]):- 
     number(X), writeln("Los animes pueden tener de 1 a 5 estrellas. Intenta de nuevo."), nl, readln(Y), nl, mensajes(Y).
 
-%Formato 1, Error de letra.
+%Formato error de letra.
 mensajes([cuales, son, los, animes, con, _, estrellas, del, genero, _]):- 
     writeln("Creo que es obvio pero lo dire. La cantidad de estrellas son numeros."), nl, readln(Y), nl, mensajes(Y).
 
-% Formato 2.
-%mensajes([quiero, saber,cuales,son, los, animes, con, X, numero, de, estrellas, del, genero, Y, _|_]):- estrellas(X,Y), nl.
 
 % Consulta de todos los animes
 mensajes([ver, animes]):- findall(X, anime(X), X), imprimir(X), nl, readln(Y), nl, mensajes(Y).
@@ -236,116 +227,38 @@ mensajes([dime, cuales, son , los, animes, poco, conocidos, _|_]):- pocoConocido
 
 % Mensaje de agregar nuevo anime a la base.
 
-% Formato 1, Shounen, sin popularidad.
-mensajes([deseo, agregar, el, anime, X, del, genero, shounen, con, W, de, rating ]):- 
-   number(W), W>0, W<6, agregar(X,"Shounen",W,1), nl, readln(Y), nl, mensajes(Y).
+% Formato valido, sin popularidad
+mensajes([deseo, agregar, el, anime, X, del, genero, G, con, W, de, rating ]):- 
+    generoValido(G, NewG), number(W), W>0, W<6, agregar(X,NewG,W,1), nl, readln(Y), nl, mensajes(Y).
 
-% Formato 1, Shounen, con popularidad.
-mensajes([deseo, agregar, el, anime, X, del, genero, shounen, con, W, de, rating, y, popularidad, Z ]):- 
-    number(W), W>0, W<6, number(Z), Z>0, Z<11, agregar(X,"Shounen",W,Z), nl, readln(Y), nl, mensajes(Y).
+% Formato valido, con popularidad.
+mensajes([deseo, agregar, el, anime, X, del, genero, G, con, W, de, rating, y, popularidad, Z ]):- 
+    generoValido(G, NewG), number(W), W>0, W<6, number(Z), Z>0, Z<11, agregar(X,NewG,W,Z), nl, readln(Y), nl, mensajes(Y).
 
-% Formato 1, Aventura, sin popularidad.
-mensajes([deseo, agregar, el, anime, X, del, genero, aventura, con, W, de, rating ]):- 
-    number(W), W>0, W<6, agregar(X,"Aventura",W,1), nl, readln(Y), nl, mensajes(Y).
+% Formato invalido, genero.
+mensajes([deseo, agregar, el, anime, _, del, genero, _, con, W, de, rating ]):- 
+    number(W), W>0, W<6, writeln("No conozco ese genero. Intenta con alguno de estos:"), nl,
+    findall(G, genero(G), Generos), imprimir(Generos), nl, readln(Y), nl, mensajes(Y).
 
-% Formato 1, Aventura, con popularidad.
-mensajes([deseo, agregar, el, anime, X, del, genero, aventura, con, W, de, rating, y, popularidad, Z ]):- 
-    number(W), W>0, W<6, number(Z), Z>0, Z<11, agregar(X,"Aventura",W,Z), nl, readln(Y), nl, mensajes(Y).
+% Formato invalido, genero con popularidad.
+mensajes([deseo, agregar, el, anime, _, del, genero, _, con, W, de, rating, y, popularidad, Z ]):- 
+    number(W), W>0, W<6, number(Z), Z>0, Z<11, writeln("No conozco ese genero. Intenta con alguno de estos:"), nl,
+    findall(G, genero(G), Generos), imprimir(Generos), nl, readln(Y), nl, mensajes(Y).
 
-% Formato 1, Shoujo, sin popularidad.
-mensajes([deseo, agregar, el, anime, X, del, genero, shoujo, con, W, de, rating ]):- 
-    number(W), W>0, W<6, agregar(X,"Shoujo",W,1), nl, readln(Y), nl, mensajes(Y).
-
-% Formato 1, Shoujo, con popularidad.
-mensajes([deseo, agregar, el, anime, X, del, genero, shoujo, con, W, de, rating, y, popularidad, Z ]):- 
-    number(W), W>0, W<6, number(Z), Z>0, Z<11, agregar(X,"Shoujo",W,Z), nl, readln(Y), nl, mensajes(Y).
-
-% Formato 1, Kodomo, sin popularidad.
-mensajes([deseo, agregar, el, anime, X, del, genero, kodomo, con, W, de, rating ]):- 
-    number(W), W>0, W<6, agregar(X,"Kodomo",W,1), nl, readln(Y), nl, mensajes(Y).
-
-% Formato 1, Kodomo, con popularidad.
-mensajes([deseo, agregar, el, anime, X, del, genero, kodomo, con, W, de, rating, y, popularidad, Z ]):- 
-    number(W), W>0, W<6, number(Z), Z>0, Z<11, agregar(X,"Kodomo",W,Z), nl, readln(Y), nl, mensajes(Y).
-
-% Formato 1, Seinen, sin popularidad.
-mensajes([deseo, agregar, el, anime, X, del, genero, seinen, con, W, de, rating ]):- 
-    number(W), W>0, W<6, agregar(X,"Seinen",W,1), nl, readln(Y), nl, mensajes(Y).
-
-% Formato 1, Seinen, con popularidad.
-mensajes([deseo, agregar, el, anime, X, del, genero, seinen, con, W, de, rating, y, popularidad, Z ]):- 
-    number(W), W>0, W<6, number(Z), Z>0, Z<11, agregar(X,"Seinen",W,Z), nl, readln(Y), nl, mensajes(Y).
-
-% Formato 1, Josei, sin popularidad.
-mensajes([deseo, agregar, el, anime, X, del, genero, josei, con, W, de, rating ]):- 
-    number(W), W>0, W<6, agregar(X,"Josei",W,1), nl, readln(Y), nl, mensajes(Y).
-
-% Formato 1, Josei, con popularidad.
-mensajes([deseo, agregar, el, anime, X, del, genero, josei, con, W, de, rating, y, popularidad, Z ]):- 
-    number(W), W>0, W<6, number(Z), Z>0, Z<11, agregar(X,"Josei",W,Z), nl, readln(Y), nl, mensajes(Y).
-
-% Formato 1, Ficcion, sin popularidad.
-mensajes([deseo, agregar, el, anime, X, del, genero, ficcion, con, W, de, rating ]):- 
-    number(W), W>0, W<6, agregar(X,"Ficcion",W,1), nl, readln(Y), nl, mensajes(Y).
-
-% Formato 1, Ficcion, con popularidad.
-mensajes([deseo, agregar, el, anime, X, del, genero, ficcion, con, W, de, rating, y, popularidad, Z ]):- 
-    number(W), W>0, W<6, number(Z), Z>0, Z<11, agregar(X,"Ficcion",W,Z), nl, readln(Y), nl, mensajes(Y).
-
-% Formato 1, Fantasia, sin popularidad.
-mensajes([deseo, agregar, el, anime, X, del, genero, fantasia, con, W, de, rating ]):- 
-    number(W), W>0, W<6, agregar(X,"Fantasia",W,1), nl, readln(Y), nl, mensajes(Y).
-
-% Formato 1, Seinen, con popularidad.
-mensajes([deseo, agregar, el, anime, X, del, genero, fantasia, con, W, de, rating, y, popularidad, Z ]):- 
-    number(W), W>0, W<6, number(Z), Z>0, Z<11, agregar(X,"Fantasia",W,Z), nl, readln(Y), nl, mensajes(Y).
-
-% Formato 1, Mecha, sin popularidad.
-mensajes([deseo, agregar, el, anime, X, del, genero, mecha, con, W, de, rating ]):- 
-    number(W), W>0, W<6, agregar(X,"Mecha",W,1), nl, readln(Y), nl, mensajes(Y).
-
-% Formato 1, Mecha, con popularidad.
-mensajes([deseo, agregar, el, anime, X, del, genero, mecha, con, W, de, rating, y, popularidad, Z ]):- 
-    number(W), W>0, W<6, number(Z), Z>0, Z<11, agregar(X,"Mecha",W,Z), nl, readln(Y), nl, mensajes(Y).
-
-% Formato 1, Sobrenatural, sin popularidad.
-mensajes([deseo, agregar, el, anime, X, del, genero, sobrenatural, con, W, de, rating ]):- 
-    number(W), W>0, W<6, agregar(X,"Sobrenatural",W,1), nl, readln(Y), nl, mensajes(Y).
-
-% Formato 1, Sobrenatural, con popularidad.
-mensajes([deseo, agregar, el, anime, X, del, genero, sobrenatural, con, W, de, rating, y, popularidad, Z ]):- 
-    number(W), W>0, W<6, number(Z), Z>0, Z<11, agregar(X,"Sobrenatural",W,Z), nl, readln(Y), nl, mensajes(Y).
-
-% Formato 1, Magia, sin popularidad.
-mensajes([deseo, agregar, el, anime, X, del, genero, magia, con, W, de, rating ]):- 
-    number(W), W>0, W<6, agregar(X,"Magia",W,1), nl, readln(Y), nl, mensajes(Y).
-
-% Formato 1, Magia, con popularidad.
-mensajes([deseo, agregar, el, anime, X, del, genero, magia, con, W, de, rating, y, popularidad, Z ]):- 
-    number(W), W>0, W<6, number(Z), Z>0, Z<11, agregar(X,"Magia",W,Z), nl, readln(Y), nl, mensajes(Y).
-
-% Formato 1, Gore, sin popularidad.
-mensajes([deseo, agregar, el, anime, X, del, genero, gore, con, W, de, rating ]):- 
-    number(W), W>0, W<6, agregar(X,"Gore",W,1), nl, readln(Y), nl, mensajes(Y).
-
-% Formato 1, Gore, con popularidad.
-mensajes([deseo, agregar, el, anime, X, del, genero, gore, con, W, de, rating, y, popularidad, Z ]):- 
-    number(W), W>0, W<6, number(Z), Z>0, Z<11, agregar(X,"Gore",W,Z), nl, readln(Y), nl, mensajes(Y).
-
-% Formato 1, error numero rating.
+% Formato invalido, error numero rating.
 mensajes([deseo, agregar, el, anime, _, del, genero, _, con, W, de, rating ]):- 
    number(W), write("El rating debe ser del 1 al 5"), nl, readln(Y), nl, mensajes(Y).
 
-% Formato 1, error numero rating y popularidad.
+% Formato invalido, error numero rating y popularidad.
 mensajes([deseo, agregar, el, anime, _, del, genero, _, con, W, de, rating, y, popularidad, Z ]):-  
    number(W), number(Z), write("El rating debe ser del 1 al 5. La popularidad debe ser del 1 al 10"), 
    nl, readln(Y), nl, mensajes(Y).
 
-% Formato 1, error rating.
+% Formato invalida, error rating.
 mensajes([deseo, agregar, el, anime, _, del, genero, _, con, _, de, rating]):- 
    write("Creo que es obvio pero lo dire. El rating debe ser un numero"), nl, readln(Y), nl, mensajes(Y).
 
-% Formato 1, error rating y popularidad.
+% Formato invalido, error rating y popularidad.
 mensajes([deseo, agregar, el, anime, _, del, genero, _, con, _, de, rating, y, popularidad, _]):-  
    write("Creo que es obvio pero lo dire. El rating y la popularidad deben ser un numero"), nl, readln(Y), nl, mensajes(Y).
 
@@ -353,4 +266,4 @@ mensajes([deseo, agregar, el, anime, _, del, genero, _, con, _, de, rating, y, p
 mensajes([salir]).
 
 % Para mostrar errores.
-mensajes([_]):-write("Dime otra cosa."), nl, readln(Y), nl, mensajes(Y).
+mensajes([_]):-write("No entiendo tu consulta, dime otra cosa."), nl, readln(Y), nl, mensajes(Y).
