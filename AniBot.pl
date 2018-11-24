@@ -141,7 +141,9 @@ pocoConocidos():-
     interseccion(GoodRatings,LowPopularity,NotKnow), imprimir(NotKnow). % NotKnown es la interseccion de GoodRatings y LowPopularity
 
 % Si el anime A no existe en la base de datos, lo agrega con genero G, rating R y popularidad P
-agregar(A,G,R,P):- not(member(A,anime(_))), assert(anime(A)), assertz(generoAnime(A,G)),assertz(rating(A,R)), assertz(popularidad(A,P)).
+agregar(A,G,R,P):- not(member(A,anime(_))), assert(anime(A)), assertz(generoAnime(A,G)),
+                   assertz(rating(A,R)), assertz(popularidad(A,P)), assertz(contador(A,0)),
+                   assertz(cambiarAnime(A,A)).
 
 /*
 Subir la popularidad del anime si los usuarios preguntan por él 5 o más veces.
@@ -153,6 +155,27 @@ contador("Bleach",0).
 contador("HunterXHunter",0).
 contador("Hamtaro",0).
 contador("Full Metal Alchemist",0).
+
+% Dado un string de anime lo devuelve en el formato deseado 
+:- dynamic cambiarAnime/2.
+cambiarAnime(dragon, "Dragon Ball").
+cambiarAnime(naruto, "Naruto").
+cambiarAnime(bleach, "Bleach").
+cambiarAnime(hunterXhunter, "HunterXHunter").
+cambiarAnime(hamtaro, "Hamtaro").
+cambiarAnime(full, "Full Metal Alchemist"). 
+
+% Dado un anime lo devuelve en el formato deseado en el caso de que pertenezca a la lista de animes existente 
+animeValido(A, NewA):- cambiarAnime(A, NewA), findall(Anime, anime(Anime), Animes), member(NewA,Animes).
+
+% Consulta el contador y lo aumenta en uno.
+consulta(X):- contador(X,Y), Y <4, retract(contador(X,Y)), Z is Y+1, assert(contador(X,Z)).
+% Caso en que el contador tiene 4 consultas y la ppularidad es menor a 10, se le aumenta en 1 y el contador se pone en 0.
+consulta(X):- contador(X,Y), Y is 4, popularidad(X,P), P <10,retract(contador(X,Y)), assert(contador(X,0)),
+              retract(popularidad(X,P)), N is P+1,assert(popularidad(X,N)).
+% Caso en que la popularidad es de 10, no hace nada.
+consulta(X):- popularidad(X,P), P is 10.        
+
 
 % Predicado inicio del chatbot.
 inicio :- write('Esto es AniBot, un chatbot que te recomendará sobre Animes.'), nl, 
@@ -255,6 +278,70 @@ mensajes([deseo, agregar, el, anime, _, del, genero, _, con, _, de, rating]):-
 % Formato invalido, error rating y popularidad.
 mensajes([deseo, agregar, el, anime, _, del, genero, _, con, _, de, rating, y, popularidad, _]):-  
    write("Creo que es obvio pero lo dire. El rating y la popularidad deben ser un numero."), nl, readln(Y), nl, mensajes(Y).
+
+/* Consulta sobre anime */
+
+% Sobre el genero.
+mensajes([quiero, saber, el, genero, del, anime, X]):- 
+    animeValido(X,W),consulta(W), generoAnime(W,Z), imprimir(Z),nl, readln(Y), nl, mensajes(Y).
+mensajes([cual, es, el, genero, del, anime, X]):- 
+    animeValido(X,W),consulta(W), generoAnime(W,Z), imprimir(Z),nl, readln(Y), nl, mensajes(Y).
+mensajes([cual, es, el, genero, de, X]):- 
+    animeValido(X,W),consulta(W), generoAnime(W,Z), imprimir(Z),nl, readln(Y), nl, mensajes(Y).
+mensajes([quiero, saber, el, genero, del, anime, X, _|_]):- 
+    animeValido(X,W),consulta(W), generoAnime(W,Z), imprimir(Z),nl, readln(Y), nl, mensajes(Y).
+mensajes([cual, es, el, genero, del, anime, X, _|_]):- 
+    animeValido(X,W),consulta(W), generoAnime(W,Z), imprimir(Z),nl, readln(Y), nl, mensajes(Y).
+mensajes([cual, es, el, genero, de, X, _|_]):- 
+    animeValido(X,W),consulta(W), generoAnime(W,Z), imprimir(Z),nl, readln(Y), nl, mensajes(Y).
+
+%Sobre el rating.
+mensajes([quiero, saber, el, rating, del, anime, X]):- 
+    animeValido(X,W),consulta(W), rating(W,Z), write(Z),nl, readln(Y), nl, mensajes(Y).
+mensajes([quiero, saber, el, rating, de,X]):- 
+    animeValido(X,W),consulta(W), rating(W,Z), write(Z),nl, readln(Y), nl, mensajes(Y).
+mensajes([cual, es, el, rating, del, anime, X]):- 
+    animeValido(X,W),consulta(W), rating(W,Z), write(Z),nl, readln(Y), nl, mensajes(Y).
+mensajes([cual, es, el, rating, de, X]):- 
+    animeValido(X,W),consulta(W), rating(W,Z), write(Z),nl, readln(Y), nl, mensajes(Y).
+mensajes([quiero, saber, el, rating, del, anime, X, _|_]):- 
+    animeValido(X,W),consulta(W), rating(W,Z), write(Z),nl, readln(Y), nl, mensajes(Y).
+mensajes([quiero, saber, el, rating, de,X,_|_]):- 
+    animeValido(X,W),consulta(W), rating(W,Z), write(Z),nl, readln(Y), nl, mensajes(Y).
+mensajes([cual, es, el, rating, del, anime, X, _|_]):- 
+    animeValido(X,W),consulta(W), rating(W,Z), write(Z),nl, readln(Y), nl, mensajes(Y).
+mensajes([cual, es, el, rating, de, X, _|_]):- 
+    animeValido(X,W),consulta(W), rating(W,Z), write(Z),nl, readln(Y), nl, mensajes(Y).
+
+%Sobre la popularidad.
+mensajes([quiero, saber, la, popularidad, del, anime, X]):- 
+    animeValido(X,W),consulta(W), popularidad(W,Z), write(Z),nl, readln(Y), nl, mensajes(Y).
+mensajes([cual, es, la, popularidad, del, anime, X]):- 
+    animeValido(X,W),consulta(W), popularidad(W,Z), write(Z),nl, readln(Y), nl, mensajes(Y).
+mensajes([cual, es, la, popularidad, de, X]):- 
+    animeValido(X,W),consulta(W), popularidad(W,Z), write(Z),nl, readln(Y), nl, mensajes(Y).
+mensajes([quiero, saber, la, popularidad, del, anime, X, _|_]):- 
+    animeValido(X,W),consulta(W), popularidad(W,Z), write(Z),nl, readln(Y), nl, mensajes(Y).
+mensajes([cual, es, la, popularidad, del, anime, X, _|_]):- 
+    animeValido(X,W),consulta(W), popularidad(W,Z), write(Z),nl, readln(Y), nl, mensajes(Y).
+mensajes([cual, es,la, popularidad, de, X, _|_]):- 
+    animeValido(X,W),consulta(W), popularidad(W,Z), write(Z),nl, readln(Y), nl, mensajes(Y).
+mensajes([cuanta, popularidad, tiene, el, anime, X]):- 
+    animeValido(X,W),consulta(W), popularidad(W,Z), write(Z),nl, readln(Y), nl, mensajes(Y).
+mensajes([cuanta, popularidad, tiene, el, anime, X, _|_]):- 
+    animeValido(X,W),consulta(W), popularidad(W,Z), write(Z),nl, readln(Y), nl, mensajes(Y).
+mensajes([cuanta, popularidad, tiene, X]):- 
+    animeValido(X,W),consulta(W), popularidad(W,Z), write(Z),nl, readln(Y), nl, mensajes(Y).
+mensajes([cuanta, popularidad, tiene, X, _|_]):- 
+    animeValido(X,W),consulta(W), popularidad(W,Z), write(Z),nl, readln(Y), nl, mensajes(Y).
+
+/* Permite ver el contador de consultados de todos los animes */
+mensajes([ver,contador]):- findall((X,Y), contador(X,Y), L), imprimir(L), nl, readln(W), nl, mensajes(W).
+mensajes([ver,contador, _|_]):- findall((X,Y), contador(X,Y), L), imprimir(L), nl, readln(W), nl, mensajes(W).
+
+/* Permite ver la popularidad de todos los animes */
+mensajes([ver,popularidad]):- findall((X,Y), popularidad(X,Y), L), imprimir(L), nl, readln(W), nl, mensajes(W).
+mensajes([ver,popularidad,_|_]):- findall((X,Y), popularidad(X,Y), L), imprimir(L), nl, readln(W), nl, mensajes(W).
 
 /* Para finalizar el chatbot. */
 mensajes([salir]).
