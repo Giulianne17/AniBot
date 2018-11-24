@@ -28,70 +28,90 @@ popularidad("HunterXHunter",3).
 popularidad("Hamtaro",10).
 popularidad("Full Metal Alchemist",1).
 
-%
-/* Poder mostrar los animés de un género ordenados por rating y/o popularidad, según
-pregunte el usuario, por defecto de mayor a menor. En caso de que se pregunte por ambos
-se suma el rating y popularidad y se ordena según el resultado. */
-
+% found(Anime, Genre, GenreList, Result)
+% Busca Genre en GenreList. 
+% Si está devuelve un arreglo con el Anime, sino devuelve un arreglo vacio
 found(_,_,[],[]).
-found(A,X,[X|_],[A]).
-found(A,X,[_|Xs],Z):- found(A,X,Xs,Z).
+found(Anime,Genre,[Genre|_],[Anime]).
+found(Anime,Genre,[_|Xs],R):- found(Anime,Genre,Xs,R).
 
+% foundGenre(Genre, List, Result)
+% Para cada anime A en List busca si es del genero Genre.
+% Devuelve una lista con los anime que cumplen la condicion.
 foundGenre(_,[],[]).
-foundGenre(Genre,[(A,B)|Xs], D) :- foundGenre(Genre,Xs,C), found(A,Genre,B,Z) ,append(Z,C,D).
+foundGenre(Genre,[(A,B)|Xs], Result) :- foundGenre(Genre,Xs,Result1), found(A,Genre,B,Result2) ,append(Result1,Result2,Result).
 
+% foundAnime(A, List, Result)
+% Busca si el anime A es el primer elemento de alguna tupla en List.
+% Si está devuelve un arreglo con la tupla, sino devuelve un arreglo vacio.
 foundAnime(_,[],[]).
 foundAnime(A,[(A,B)|_], [(A,B)]).
-foundAnime(A,[_|Pares], As):- foundAnime(A, Pares, As).
+foundAnime(A,[_|Pares], Result):- foundAnime(A, Pares, Result).
 
+% loopAnime(AnimeList, List, Result)
+% Para cada anime A, busca si es el primer elemento de alguna tupla en List.
+% Devuelve una lista con los anime que cumplen la condicion.
 loopAnime([],_,[]).
-loopAnime([X|Xs],List2,List3):- foundAnime(X, List2, ListA), loopAnime(Xs, List2, ListB), append(ListA, ListB, List3).
+loopAnime([A|As],List,Result):- foundAnime(A, List, ListA), loopAnime(As, List, ListB), append(ListA, ListB, Result).
 
-% Realiza el query sobre el rating de todos los anime de genero G y los imprime en orden ascendente
-orderBy(rating,G) :- 
+% addRatingPopularity(Pares1, Pares2, Result)
+% Para cada anime suma su popularidad y su rating
+addRatingPopularity([(A,R)], [(A,P)], [(A,N)]) :- N is R+P.
+addRatingPopularity([(A,R)|Pares1], [(A,P)|Pares2], Adds) :- addRatingPopularity(Pares1,Pares2,List), N is R+P, append([(A,N)], List, Adds).
+
+% Realiza el query sobre el rating de todos los anime de genero G y los imprime en orden indicado
+orderBy(rating,G,Order) :- 
     findall((Y,X),rating(Y,X), L),              % L tiene una lista de pares (Anime, Rating)
     findall((A,List),generoAnime(A,List),As),   % As tiene una lista de pares (Anime, ListaGeneros)
     foundGenre(G,As,ListGenre),                 % ListGenre tiene una lista de Animes que son del genero G
     loopAnime(ListGenre,L,GenreRating),         % GenreRating tiene una lista de pares (Anime, Rating) donde Anime es del genero G
-    sort(2,@=<, GenreRating, Sorted),           % Sorted es la lista GenreRating ordenada por Rating de forma ascendente
+    sort(2,Order, GenreRating, Sorted),         % Sorted es la lista GenreRating ordenada por Rating de forma ascendente
     imprimir(Sorted).
 
-% Realiza el query sobre la popularidad de todos los anime de genero G y los imprime en orden ascendente
-orderBy(popularidad,G) :- 
+% Realiza el query sobre la popularidad de todos los anime de genero G y los imprime en orden indicado
+orderBy(popularidad,G,Order) :- 
     findall((Y,X),popularidad(Y,X), L),         % L tiene una lista de pares (Anime, Popularidad)
     findall((A,List),generoAnime(A,List),As),   % As tiene una lista de pares (Anime, ListaGeneros)
     foundGenre(G,As,ListGenre),                 % ListGenre tiene una lista de Animes que son del genero G
     loopAnime(ListGenre,L,GenrePopular),        % GenrePopular tiene una lista de pares (Anime, Popularidad) donde Anime es del genero G
-    sort(2,@=<, GenrePopular, Sorted),          % Sorted es la lista GenrePopular ordenada por Popularidad de forma ascendente
+    sort(2,Order, GenrePopular, Sorted),        % Sorted es la lista GenrePopular ordenada por Popularidad de forma ascendente
     imprimir(Sorted).
 
+% Realiza el query sobre la popularidad y el rating de todos los anime de genero G y los imprime en orden indicado
+orderBy(both,G,Order) :- 
+    findall((Y,X),popularidad(Y,X), L1),        % L1 tiene una lista de pares (Anime, Popularidad)
+    findall((Y,X),rating(Y,X), L2),             % L2 tiene una lista de pares (Anime, Rating)
+    addRatingPopularity(L1,L2,Suma),            % Suma tiene una lista de pares (Anime, Popularidad+Rating)
+    findall((A,List),generoAnime(A,List),As),   % As tiene una lista de pares (Anime, ListaGeneros)
+    foundGenre(G,As,ListGenre),                 % ListGenre tiene una lista de Animes que son del genero G
+    loopAnime(ListGenre,Suma,GenrePopular),     % GenrePopular tiene una lista de pares (Anime, Popularidad+Rating) donde Anime es del genero G
+    sort(2,Order, GenrePopular, Sorted),        % Sorted es la lista GenrePopular ordenada por Popularidad+Rating de forma ascendente
+    imprimir(Sorted).
+
+/*
+Cuando se trabaje con orderBy hay que preguntar si quiere por rating, genero o ambos y si dice ascendente
+Order = @<=, si dice descendente Order = @>=. Si no dice nada se pone descendente
+*/
 
 % Dado un arreglo imprime cada elemento en una linea
 imprimir([]).
 imprimir([X|L]) :- writeln(X), imprimir(L).
 
-% Realiza el query sobre la popularidad de todos los anime y los imprime en orden  ascendente
-orderBy(popularidad) :- findall((Y,X),popularidad(Y,X), L), sort(2,@=<, L, Sorted), imprimir(Sorted).
 
 % Funcion que concatena dos listas.
 concat([], X, X).
 concat([Y|YS], X, [Y|Z]) :- concat(YS, X, Z).
-%
-/*
-ordenarRating(X, Z):- findall(A,generoAnime(A,X),A),
-                      findall(A1, rating(A1,1),A1), member(A1,A), concat([],A1,Z1),
-                      findall(A2, rating(A2,2),A2), member(A2,A), concat(Z1,A2,Z2),
-                      findall(A3, rating(A3,3),A3), member(A3,A), concat(Z2,A3,Z3),
-                      findall(A4, rating(A4,4),A4), member(A4,A), concat(Z3,A4,Z4),
-                      findall(A5, rating(A5,5),A5), member(A5,A), concat(Z4,A5,Z).
-*/
 
 %
 /*
 Poder mostar los animés con X número de estrellas dentro de cierto género (el género es
 un estado del chatbot que se debe conocer).
 */
-estrellas(X,Y):- findall(L,rating(L,X),L), findall(A,generoAnime(A,Y),A), interseccion(L,A,W), imprimir(W).
+estrellas(X,G):- 
+    findall(Anime,rating(Anime,X),AnimeList),                           % AnimeList es una lista de animes que tienen X estrellas
+    findall((A,Y),generoAnime(A,Y),AnimeWithGenre),                     % AnimeWithGenre es una lista de pares (Anime, ListaGeneros)
+    foundGenre(G, AnimeWithGenre, SpecificAnime),                       % SpecificAnime es una lista de animes que tiene genero G
+    interseccion(AnimeList, SpecificAnime, Result), imprimir(Result).   % Result es la intersecion de AnimeList con SpecificAnime
 
 % Funcion que hace la interseccion de dos listas.
 interseccion([], _, []).
@@ -102,11 +122,16 @@ interseccion([_|As], Bs, Cs):- interseccion(As, Bs, Cs).
 Poder mostrar los animés buenos poco conocidos. Aquí se hace referencia a rating alto
 con popularidad baja.
 */
-pocoConocidos():- findall(L,rating(L,5),L), findall(M,rating(M,4),M), concat(L, M, Z),
-                  findall(N,popularidad(N,1),N), findall(O,popularidad(O,2),O), concat(N, O, A),
-                  findall(P,popularidad(P,3),P), findall(Q,popularidad(Q,4),Q), concat(P,Q, B),
-                  findall(R,popularidad(R,5),R), concat(A,B,C), concat(C,R,D), 
-                  interseccion(Z,D,F), imprimir(F). 
+pocoConocidos():- 
+    findall(A1,rating(A1,5),Rating5), findall(A2,rating(A2,4),Rating4),
+    findall(A3,popularidad(A3,1),Popular1), findall(A4,popularidad(A4,2),Popular2), 
+    findall(A5,popularidad(A5,3),Popular3), findall(A6,popularidad(A6,4),Popular4), findall(A7,popularidad(A7,5),Popular5),
+    concat(Rating5, Rating4, GoodRatings),                              % GoodRatings es una lista de animes con rating 4 o 5
+    concat(Popular1, Popular2, LowPopularity1),                         % LowPopularity1 es una lista de animes con popularidad 1 o 2
+    concat(Popular3, Popular4, LowPopularity2),                         % LowPopularity2 es una lista de animes con popularidad 3 o 4
+    concat(LowPopularity1, LowPopularity2, LowPopularity3),             % LowPopularity3 es una lista de animes con popularidad de 1 a 4
+    concat(LowPopularity3, Popular5, LowPopularity),                    % LowPopularity es una lista de animes con popularidad menor o igual a 5
+    interseccion(GoodRatings,LowPopularity,NotKnow), imprimir(NotKnow). % NotKnown es la interseccion de GoodRatings y LowPopularity
 
 /*
 Poder agregar a la base de datos un anime con su género y rating, si no está en la misma.
