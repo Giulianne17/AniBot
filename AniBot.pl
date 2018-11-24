@@ -159,6 +159,228 @@ inicio :- write('Esto es AniBot, un chatbot que te recomendará sobre Animes.'),
 
 mensajes([start]) :- write('Pregunte lo que desee consultar'),nl, readln(X), nl, mensajes(X).
 
+% Preguntas sobre el orden segun rating.
+
+% Shounen
+mensajes([dime,los, animes, del, genero, shounen, ordenados, de, forma, ascendente, segun, rating ]):- 
+    orderBy(rating,"Shounen",@=<), nl, readln(Y), nl, mensajes(Y).
+mensajes([dime,los, animes, del, genero, shounen, ordenados, de, forma, descendente, segun, rating ]):- 
+    orderBy(rating,"Shounen",@>=), nl, readln(Y), nl, mensajes(Y).
+
+% Aventura
+mensajes([dime,los, animes, del, genero, aventura, ordenados, de, forma, ascendente, segun, rating ]):- 
+    orderBy(rating,"Aventura",@=<), nl, readln(Y), nl, mensajes(Y).
+mensajes([dime,los, animes, del, genero, aventura, ordenados, de, forma, descendente, segun, rating ]):- 
+    orderBy(rating,"Aventura",@>=), nl, readln(Y), nl, mensajes(Y).
+
+% Shoujo
+mensajes([dime,los, animes, del, genero, shoujo, ordenados, de, forma, ascendente, segun, rating ]):- 
+    orderBy(rating,"Shoujo",@=<), nl, readln(Y), nl, mensajes(Y).
+mensajes([dime,los, animes, del, genero, shoujo, ordenados, de, forma, descendente, segun, rating ]):- 
+    orderBy(rating,"Shoujo",@>=), nl, readln(Y), nl, mensajes(Y).
+
+% Kodomo
+mensajes([dime,los, animes, del, genero, kodomo, ordenados, de, forma, ascendente, segun, rating ]):- 
+    orderBy(rating,"Kodomo",@=<), nl, readln(Y), nl, mensajes(Y).
+mensajes([dime,los, animes, del, genero, kodomo, ordenados, de, forma, descendente, segun, rating ]):- 
+    orderBy(rating,"Kodomo",@>=), nl, readln(Y), nl, mensajes(Y).
+
+% Seinen
+mensajes([dime,los, animes, del, genero, seinen, ordenados, de, forma, ascendente, segun, rating ]):- 
+    orderBy(rating,"Seinen",@=<), nl, readln(Y), nl, mensajes(Y).
+mensajes([dime,los, animes, del, genero, seinen, ordenados, de, forma, descendente, segun, rating ]):- 
+    orderBy(rating,"Seinen",@>=), nl, readln(Y), nl, mensajes(Y).
+
+% Josei
+mensajes([dime,los, animes, del, genero, josei, ordenados, de, forma, ascendente, segun, rating ]):- 
+    orderBy(rating,"Josei",@=<), nl, readln(Y), nl, mensajes(Y).
+mensajes([dime,los, animes, del, genero, josei, ordenados, de, forma, descendente, segun, rating ]):- 
+    orderBy(rating,"Josei",@>=), nl, readln(Y), nl, mensajes(Y).
+
+% Ficcion
+mensajes([dime,los, animes, del, genero, ficcion, ordenados, de, forma, ascendente, segun, rating ]):- 
+    orderBy(rating,"Ficcion",@=<), nl, readln(Y), nl, mensajes(Y).
+mensajes([dime,los, animes, del, genero, ficcion, ordenados, de, forma, descendente, segun, rating ]):- 
+    orderBy(rating,"Ficcion",@>=), nl, readln(Y), nl, mensajes(Y).
+
+% Fantasia
+mensajes([dime,los, animes, del, genero, fantasia, ordenados, de, forma, ascendente, segun, rating ]):- 
+    orderBy(rating,"Fantasia",@=<), nl, readln(Y), nl, mensajes(Y).
+mensajes([dime,los, animes, del, genero, fantasia, ordenados, de, forma, descendente, segun, rating ]):- 
+    orderBy(rating,"Fantasia",@>=), nl, readln(Y), nl, mensajes(Y).
+
+% Mecha
+mensajes([dime,los, animes, del, genero, mecha, ordenados, de, forma, ascendente, segun, rating ]):- 
+    orderBy(rating,"Mecha",@=<), nl, readln(Y), nl, mensajes(Y).
+mensajes([dime,los, animes, del, genero, mecha, ordenados, de, forma, descendente, segun, rating ]):- 
+    orderBy(rating,"Mecha",@>=), nl, readln(Y), nl, mensajes(Y).
+
+% Sobrenatural
+mensajes([dime,los, animes, del, genero, sobrenatural, ordenados, de, forma, ascendente, segun, rating ]):- 
+    orderBy(rating,"Sobrenatural",@=<), nl, readln(Y), nl, mensajes(Y).
+mensajes([dime,los, animes, del, genero, sobrenatural, ordenados, de, forma, descendente, segun, rating ]):- 
+    orderBy(rating,"Sobrenatural",@>=), nl, readln(Y), nl, mensajes(Y).
+
+% Magia
+mensajes([dime,los, animes, del, genero, magia, ordenados, de, forma, ascendente, segun, rating ]):- 
+    orderBy(rating,"Magia",@=<), nl, readln(Y), nl, mensajes(Y).
+mensajes([dime,los, animes, del, genero, magia, ordenados, de, forma, descendente, segun, rating ]):- 
+    orderBy(rating,"Magia",@>=), nl, readln(Y), nl, mensajes(Y).
+
+% Gore
+mensajes([dime,los, animes, del, genero, gore, ordenados, de, forma, ascendente, segun, rating ]):- 
+    orderBy(rating,"Gore",@=<), nl, readln(Y), nl, mensajes(Y).
+mensajes([dime,los, animes, del, genero, gore, ordenados, de, forma, descendente, segun, rating ]):- 
+    orderBy(rating,"Gore",@>=), nl, readln(Y), nl, mensajes(Y).
+
+% Preguntas sobre el orden segun popularidad.
+
+% Shounen
+mensajes([dime,los, animes, del, genero, shounen, ordenados, de, forma, ascendente, segun, popularidad ]):- 
+    orderBy(popularidad,"Shounen",@=<), nl, readln(Y), nl, mensajes(Y).
+mensajes([dime,los, animes, del, genero, shounen, ordenados, de, forma, descendente, segun, popularidad ]):- 
+    orderBy(popularidad,"Shounen",@>=), nl, readln(Y), nl, mensajes(Y).
+
+% Aventura
+mensajes([dime,los, animes, del, genero, aventura, ordenados, de, forma, ascendente, segun, popularidad ]):- 
+    orderBy(popularidad,"Aventura",@=<), nl, readln(Y), nl, mensajes(Y).
+mensajes([dime,los, animes, del, genero, aventura, ordenados, de, forma, descendente, segun, popularidad ]):- 
+    orderBy(popularidad,"Aventura",@>=), nl, readln(Y), nl, mensajes(Y).
+
+% Shoujo
+mensajes([dime,los, animes, del, genero, shoujo, ordenados, de, forma, ascendente, segun, popularidad ]):- 
+    orderBy(popularidad,"Shoujo",@=<), nl, readln(Y), nl, mensajes(Y).
+mensajes([dime,los, animes, del, genero, shoujo, ordenados, de, forma, descendente, segun, popularidad ]):- 
+    orderBy(popularidad,"Shoujo",@>=), nl, readln(Y), nl, mensajes(Y).
+
+% Kodomo
+mensajes([dime,los, animes, del, genero, kodomo, ordenados, de, forma, ascendente, segun, popularidad ]):- 
+    orderBy(popularidad,"Kodomo",@=<), nl, readln(Y), nl, mensajes(Y).
+mensajes([dime,los, animes, del, genero, kodomo, ordenados, de, forma, descendente, segun, popularidad ]):- 
+    orderBy(popularidad,"Kodomo",@>=), nl, readln(Y), nl, mensajes(Y).
+
+% Seinen
+mensajes([dime,los, animes, del, genero, seinen, ordenados, de, forma, ascendente, segun, popularidad ]):- 
+    orderBy(popularidad,"Seinen",@=<), nl, readln(Y), nl, mensajes(Y).
+mensajes([dime,los, animes, del, genero, seinen, ordenados, de, forma, descendente, segun, popularidad ]):- 
+    orderBy(popularidad,"Seinen",@>=), nl, readln(Y), nl, mensajes(Y).
+
+% Josei
+mensajes([dime,los, animes, del, genero, josei, ordenados, de, forma, ascendente, segun, popularidad ]):- 
+    orderBy(popularidad,"Josei",@=<), nl, readln(Y), nl, mensajes(Y).
+mensajes([dime,los, animes, del, genero, josei, ordenados, de, forma, descendente, segun, popularidad ]):- 
+    orderBy(popularidad,"Josei",@>=), nl, readln(Y), nl, mensajes(Y).
+
+% Ficcion
+mensajes([dime,los, animes, del, genero, ficcion, ordenados, de, forma, ascendente, segun, popularidad ]):- 
+    orderBy(popularidad,"Ficcion",@=<), nl, readln(Y), nl, mensajes(Y).
+mensajes([dime,los, animes, del, genero, ficcion, ordenados, de, forma, descendente, segun, popularidad ]):- 
+    orderBy(popularidad,"Ficcion",@>=), nl, readln(Y), nl, mensajes(Y).
+
+% Fantasia
+mensajes([dime,los, animes, del, genero, fantasia, ordenados, de, forma, ascendente, segun, popularidad ]):- 
+    orderBy(popularidad,"Fantasia",@=<), nl, readln(Y), nl, mensajes(Y).
+mensajes([dime,los, animes, del, genero, fantasia, ordenados, de, forma, descendente, segun, popularidad ]):- 
+    orderBy(popularidad,"Fantasia",@>=), nl, readln(Y), nl, mensajes(Y).
+
+% Mecha
+mensajes([dime,los, animes, del, genero, mecha, ordenados, de, forma, ascendente, segun, popularidad ]):- 
+    orderBy(popularidad,"Mecha",@=<), nl, readln(Y), nl, mensajes(Y).
+mensajes([dime,los, animes, del, genero, mecha, ordenados, de, forma, descendente, segun, popularidad ]):- 
+    orderBy(popularidad,"Mecha",@>=), nl, readln(Y), nl, mensajes(Y).
+
+% Sobrenatural
+mensajes([dime,los, animes, del, genero, sobrenatural, ordenados, de, forma, ascendente, segun, popularidad ]):- 
+    orderBy(popularidad,"Sobrenatural",@=<), nl, readln(Y), nl, mensajes(Y).
+mensajes([dime,los, animes, del, genero, sobrenatural, ordenados, de, forma, descendente, segun, popularidad ]):- 
+    orderBy(popularidad,"Sobrenatural",@>=), nl, readln(Y), nl, mensajes(Y).
+
+% Magia
+mensajes([dime,los, animes, del, genero, magia, ordenados, de, forma, ascendente, segun, popularidad ]):- 
+    orderBy(popularidad,"Magia",@=<), nl, readln(Y), nl, mensajes(Y).
+mensajes([dime,los, animes, del, genero, magia, ordenados, de, forma, descendente, segun, popularidad ]):- 
+    orderBy(popularidad,"Magia",@>=), nl, readln(Y), nl, mensajes(Y).
+
+% Gore
+mensajes([dime,los, animes, del, genero, gore, ordenados, de, forma, ascendente, segun, popularidad ]):- 
+    orderBy(popularidad,"Gore",@=<), nl, readln(Y), nl, mensajes(Y).
+mensajes([dime,los, animes, del, genero, gore, ordenados, de, forma, descendente, segun, popularidad ]):- 
+    orderBy(popularidad,"Gore",@>=), nl, readln(Y), nl, mensajes(Y).
+
+% Preguntas sobre el orden segun popularidad y rating.
+
+% Shounen
+mensajes([dime,los, animes, del, genero, shounen, ordenados, de, forma, ascendente, segun, popularidad, y, rating]):- 
+    orderBy(both,"Shounen",@=<), nl, readln(Y), nl, mensajes(Y).
+mensajes([dime,los, animes, del, genero, shounen, ordenados, de, forma, descendente, segun, popularidad, y, rating]):- 
+    orderBy(both,"Shounen",@>=), nl, readln(Y), nl, mensajes(Y).
+
+% Aventura
+mensajes([dime,los, animes, del, genero, aventura, ordenados, de, forma, ascendente, segun, popularidad, y, rating ]):- 
+    orderBy(both,"Aventura",@=<), nl, readln(Y), nl, mensajes(Y).
+mensajes([dime,los, animes, del, genero, aventura, ordenados, de, forma, descendente, segun, popularidad, y, rating ]):- 
+    orderBy(both,"Aventura",@>=), nl, readln(Y), nl, mensajes(Y).
+
+% Shoujo
+mensajes([dime,los, animes, del, genero, shoujo, ordenados, de, forma, ascendente, segun, popularidad, y, rating ]):- 
+    orderBy(both,"Shoujo",@=<), nl, readln(Y), nl, mensajes(Y).
+mensajes([dime,los, animes, del, genero, shoujo, ordenados, de, forma, descendente, segun, popularidad, y, rating ]):- 
+    orderBy(both,"Shoujo",@>=), nl, readln(Y), nl, mensajes(Y).
+
+% Kodomo
+mensajes([dime,los, animes, del, genero, kodomo, ordenados, de, forma, ascendente, segun, popularidad, y, rating ]):- 
+    orderBy(both,"Kodomo",@=<), nl, readln(Y), nl, mensajes(Y).
+mensajes([dime,los, animes, del, genero, kodomo, ordenados, de, forma, descendente, segun, popularidad, y, rating ]):- 
+    orderBy(both,"Kodomo",@>=), nl, readln(Y), nl, mensajes(Y).
+
+% Seinen
+mensajes([dime,los, animes, del, genero, seinen, ordenados, de, forma, ascendente, segun, popularidad, y, rating ]):- 
+    orderBy(both,"Seinen",@=<), nl, readln(Y), nl, mensajes(Y).
+mensajes([dime,los, animes, del, genero, seinen, ordenados, de, forma, descendente, segun, popularidad, y, rating ]):- 
+    orderBy(both,"Seinen",@>=), nl, readln(Y), nl, mensajes(Y).
+
+% Josei
+mensajes([dime,los, animes, del, genero, josei, ordenados, de, forma, ascendente, segun, popularidad, y, rating ]):- 
+    orderBy(both,"Josei",@=<), nl, readln(Y), nl, mensajes(Y).
+mensajes([dime,los, animes, del, genero, josei, ordenados, de, forma, descendente, segun, popularidad, y, rating ]):- 
+    orderBy(both,"Josei",@>=), nl, readln(Y), nl, mensajes(Y).
+
+% Ficcion
+mensajes([dime,los, animes, del, genero, ficcion, ordenados, de, forma, ascendente, segun, popularidad, y, rating ]):- 
+    orderBy(both,"Ficcion",@=<), nl, readln(Y), nl, mensajes(Y).
+mensajes([dime,los, animes, del, genero, ficcion, ordenados, de, forma, descendente, segun, popularidad, y, rating ]):- 
+    orderBy(both,"Ficcion",@>=), nl, readln(Y), nl, mensajes(Y).
+
+% Fantasia
+mensajes([dime,los, animes, del, genero, fantasia, ordenados, de, forma, ascendente, segun, popularidad, y, rating ]):- 
+    orderBy(both,"Fantasia",@=<), nl, readln(Y), nl, mensajes(Y).
+mensajes([dime,los, animes, del, genero, fantasia, ordenados, de, forma, descendente, segun, popularidad, y, rating ]):- 
+    orderBy(both,"Fantasia",@>=), nl, readln(Y), nl, mensajes(Y).
+
+% Mecha
+mensajes([dime,los, animes, del, genero, mecha, ordenados, de, forma, ascendente, segun, popularidad, y, rating ]):- 
+    orderBy(both,"Mecha",@=<), nl, readln(Y), nl, mensajes(Y).
+mensajes([dime,los, animes, del, genero, mecha, ordenados, de, forma, descendente, segun, popularidad, y, rating ]):- 
+    orderBy(both,"Mecha",@>=), nl, readln(Y), nl, mensajes(Y).
+
+% Sobrenatural
+mensajes([dime,los, animes, del, genero, sobrenatural, ordenados, de, forma, ascendente, segun, popularidad, y, rating ]):- 
+    orderBy(both,"Sobrenatural",@=<), nl, readln(Y), nl, mensajes(Y).
+mensajes([dime,los, animes, del, genero, sobrenatural, ordenados, de, forma, descendente, segun, popularidad, y, rating ]):- 
+    orderBy(both,"Sobrenatural",@>=), nl, readln(Y), nl, mensajes(Y).
+
+% Magia
+mensajes([dime,los, animes, del, genero, magia, ordenados, de, forma, ascendente, segun, popularidad, y, rating ]):- 
+    orderBy(both,"Magia",@=<), nl, readln(Y), nl, mensajes(Y).
+mensajes([dime,los, animes, del, genero, magia, ordenados, de, forma, descendente, segun, popularidad, y, rating ]):- 
+    orderBy(both,"Magia",@>=), nl, readln(Y), nl, mensajes(Y).
+
+% Gore
+mensajes([dime,los, animes, del, genero, gore, ordenados, de, forma, ascendente, segun, popularidad, y, rating ]):- 
+    orderBy(both,"Gore",@=<), nl, readln(Y), nl, mensajes(Y).
+mensajes([dime,los, animes, del, genero, gore, ordenados, de, forma, descendente, segun, popularidad, y, rating ]):- 
+    orderBy(both,"Gore",@>=), nl, readln(Y), nl, mensajes(Y).
+
 % Preguntas sobre los animes con X número de estrellas dentro de cierto género.
 
 %Formato 1, Shounen.
@@ -321,3 +543,6 @@ mensajes([deseo, agregar, el, anime, X, del, genero, gore, con, W, de, rating, y
 
 % Para finalizar el chatbot.
 mensajes([salir]).
+
+% Cuando escribe algo que no esta en los mensajes predeterminados.
+mensajes([_|_]):- write("No entiendo tu consulta, intente otra vez"),nl, readln(Y), nl, mensajes(Y).
