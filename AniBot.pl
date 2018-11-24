@@ -88,10 +88,6 @@ orderBy(both,G,Order) :-
     sort(2,Order, GenrePopular, Sorted),        % Sorted es la lista GenrePopular ordenada por Popularidad+Rating de forma ascendente
     imprimir(Sorted).
 
-/*
-Cuando se trabaje con orderBy hay que preguntar si quiere por rating, genero o ambos y si dice ascendente
-Order = @<=, si dice descendente Order = @>=. Si no dice nada se pone descendente
-*/
 
 % Dado un arreglo imprime cada elemento en una linea
 imprimir([]).
@@ -102,11 +98,7 @@ imprimir([X|L]) :- writeln(X), imprimir(L).
 concat([], X, X).
 concat([Y|YS], X, [Y|Z]) :- concat(YS, X, Z).
 
-%
-/*
-Poder mostar los animés con X número de estrellas dentro de cierto género (el género es
-un estado del chatbot que se debe conocer).
-*/
+% Muestra los animes del genero G que tengan X estrellas
 estrellas(X,G):- 
     findall(Anime,rating(Anime,X),AnimeList),                           % AnimeList es una lista de animes que tienen X estrellas
     findall((A,Y),generoAnime(A,Y),AnimeWithGenre),                     % AnimeWithGenre es una lista de pares (Anime, ListaGeneros)
@@ -119,7 +111,7 @@ interseccion(_, [],[]).
 interseccion([A|As], Bs, [A|Cs]):- member(A, Bs), !, interseccion(As, Bs, Cs).
 interseccion([_|As], Bs, Cs):- interseccion(As, Bs, Cs).
 
-
+% Dado un string de genero lo devuelve en el formato deseado 
 cambiarGenero(aventura, "Aventura").
 cambiarGenero(shoujo, "Shoujo").
 cambiarGenero(shounen, "Shounen").
@@ -133,12 +125,10 @@ cambiarGenero(sobrenatural, "Sobrenatural").
 cambiarGenero(magia, "Magia").
 cambiarGenero(gore, "Gore").
 
+% Dado un genero lo devuelve en el formato deseado en el caso de que pertenezca a la lista de generos existente 
 generoValido(G, NewG):- cambiarGenero(G, NewG), findall(Genero, genero(Genero), Generos), member(NewG,Generos).
 
-/*
-Poder mostrar los animés buenos poco conocidos. Aquí se hace referencia a rating alto
-con popularidad baja.
-*/
+% Muestra animes con baja popularidad y rating alto
 pocoConocidos():- 
     findall(A1,rating(A1,5),Rating5), findall(A2,rating(A2,4),Rating4),
     findall(A3,popularidad(A3,1),Popular1), findall(A4,popularidad(A4,2),Popular2), 
@@ -150,10 +140,7 @@ pocoConocidos():-
     concat(LowPopularity3, Popular5, LowPopularity),                    % LowPopularity es una lista de animes con popularidad menor o igual a 5
     interseccion(GoodRatings,LowPopularity,NotKnow), imprimir(NotKnow). % NotKnown es la interseccion de GoodRatings y LowPopularity
 
-/*
-Poder agregar a la base de datos un anime con su género y rating, si no está en la misma.
-La popularidad es opcional especificarla al agregarlo y por defecto es 1.
-*/
+% Si el anime A no existe en la base de datos, lo agrega con genero G, rating R y popularidad P
 agregar(A,G,R,P):- not(member(A,anime(_))), assert(anime(A)), assertz(generoAnime(A,G)),assertz(rating(A,R)), assertz(popularidad(A,P)).
 
 /*
@@ -175,28 +162,33 @@ inicio :- write('Esto es AniBot, un chatbot que te recomendará sobre Animes.'),
 
 mensajes([start]) :- write('Pregunte lo que desee consultar'),nl, readln(X), nl, mensajes(X).
 
-% Preguntas sobre el orden segun rating.
+/* Preguntas sobre el orden segun rating. */
 
 mensajes([dime,los, animes, del, genero, G, ordenados, de, forma, ascendente, segun, rating ]):- 
     generoValido(G, NewG), orderBy(rating,NewG,@=<), nl, readln(Y), nl, mensajes(Y).
 mensajes([dime,los, animes, del, genero, G, ordenados, de, forma, descendente, segun, rating ]):- 
     generoValido(G, NewG), orderBy(rating,NewG,@>=), nl, readln(Y), nl, mensajes(Y).
 
-% Preguntas sobre el orden segun popularidad.
+/* Preguntas sobre el orden segun popularidad. */
 
 mensajes([dime,los, animes, del, genero, G, ordenados, de, forma, ascendente, segun, popularidad ]):- 
     generoValido(G, NewG), orderBy(popularidad,NewG,@=<), nl, readln(Y), nl, mensajes(Y).
 mensajes([dime,los, animes, del, genero, G, ordenados, de, forma, descendente, segun, popularidad ]):- 
     generoValido(G, NewG), orderBy(popularidad,NewG,@>=), nl, readln(Y), nl, mensajes(Y).
 
-% Preguntas sobre el orden segun popularidad y rating.
+/* Preguntas sobre el orden segun popularidad y rating. */
 
 mensajes([dime,los, animes, del, genero, G, ordenados, de, forma, ascendente, segun, popularidad, y, rating]):- 
     generoValido(G, NewG), orderBy(both,NewG,@=<), nl, readln(Y), nl, mensajes(Y).
 mensajes([dime,los, animes, del, genero, G, ordenados, de, forma, descendente, segun, popularidad, y, rating]):- 
     generoValido(G, NewG), orderBy(both,NewG,@>=), nl, readln(Y), nl, mensajes(Y).
 
-% Preguntas sobre los animes con X número de estrellas dentro de cierto género.
+% Mensajes invalidos
+mensajes([dime,los, animes, del, genero, _, ordenados, de, forma, _, segun, _|_]):- 
+    writeln("No conozco ese genero. Intenta con alguno de estos:"), nl,
+    findall(G, genero(G), Generos), imprimir(Generos), nl, readln(Y), nl, mensajes(Y).
+
+/* Preguntas sobre los animes con X número de estrellas dentro de cierto género. */
 
 % Formato valido
 mensajes([cuales, son, los, animes, con, X, estrellas, del, genero, G]):- 
@@ -216,16 +208,18 @@ mensajes([cuales, son, los, animes, con, _, estrellas, del, genero, _]):-
     writeln("Creo que es obvio pero lo dire. La cantidad de estrellas son numeros."), nl, readln(Y), nl, mensajes(Y).
 
 
-% Consulta de todos los animes
+/* Consulta de todos los animes */
+
 mensajes([ver, animes]):- findall(X, anime(X), X), imprimir(X), nl, readln(Y), nl, mensajes(Y).
 mensajes([ver, animes,_|_]):- findall(X, anime(X), X), imprimir(X), nl, readln(Y), nl, mensajes(Y).
 
-% Preguntas sobre animes poco conocidos:
+/* Preguntas sobre animes poco conocidos: */
+
 mensajes([cuales, son , los, animes, poco, conocidos, _|_]):- pocoConocidos(), nl, readln(Y), nl, mensajes(Y).
 mensajes([quiero, saber, cuales, son , los, animes, poco, conocidos, _|_]):- pocoConocidos(), nl, readln(Y), nl, mensajes(Y).
 mensajes([dime, cuales, son , los, animes, poco, conocidos, _|_]):- pocoConocidos(), nl, readln(Y), nl, mensajes(Y).
 
-% Mensaje de agregar nuevo anime a la base.
+/* Mensaje de agregar nuevo anime a la base. */
 
 % Formato valido, sin popularidad
 mensajes([deseo, agregar, el, anime, X, del, genero, G, con, W, de, rating ]):- 
@@ -247,23 +241,23 @@ mensajes([deseo, agregar, el, anime, _, del, genero, _, con, W, de, rating, y, p
 
 % Formato invalido, error numero rating.
 mensajes([deseo, agregar, el, anime, _, del, genero, _, con, W, de, rating ]):- 
-   number(W), write("El rating debe ser del 1 al 5"), nl, readln(Y), nl, mensajes(Y).
+   number(W), write("El rating debe ser del 1 al 5."), nl, readln(Y), nl, mensajes(Y).
 
 % Formato invalido, error numero rating y popularidad.
 mensajes([deseo, agregar, el, anime, _, del, genero, _, con, W, de, rating, y, popularidad, Z ]):-  
-   number(W), number(Z), write("El rating debe ser del 1 al 5. La popularidad debe ser del 1 al 10"), 
+   number(W), number(Z), write("El rating debe ser del 1 al 5. La popularidad debe ser del 1 al 10."), 
    nl, readln(Y), nl, mensajes(Y).
 
 % Formato invalida, error rating.
 mensajes([deseo, agregar, el, anime, _, del, genero, _, con, _, de, rating]):- 
-   write("Creo que es obvio pero lo dire. El rating debe ser un numero"), nl, readln(Y), nl, mensajes(Y).
+   write("Creo que es obvio pero lo dire. El rating debe ser un numero."), nl, readln(Y), nl, mensajes(Y).
 
 % Formato invalido, error rating y popularidad.
 mensajes([deseo, agregar, el, anime, _, del, genero, _, con, _, de, rating, y, popularidad, _]):-  
-   write("Creo que es obvio pero lo dire. El rating y la popularidad deben ser un numero"), nl, readln(Y), nl, mensajes(Y).
+   write("Creo que es obvio pero lo dire. El rating y la popularidad deben ser un numero."), nl, readln(Y), nl, mensajes(Y).
 
-% Para finalizar el chatbot.
+/* Para finalizar el chatbot. */
 mensajes([salir]).
 
-% Para mostrar errores.
+/* Mensaje de error. */
 mensajes([_]):-write("No entiendo tu consulta, dime otra cosa."), nl, readln(Y), nl, mensajes(Y).
