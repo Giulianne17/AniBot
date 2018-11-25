@@ -319,7 +319,7 @@ mensajes([deseo, agregar, el, anime, X, del, genero, G, con, W, de, rating,_|_])
     generoValido(G, NewG), number(W), W>0, W<6, agregar(X,NewG,W,1), nl, readln(Y), nl, mensajes(Y).
 
 % Formato valido, con popularidad.
-mensajes([deseo, agregar, el, anime, X, del, genero, G, con, W, de, rating, y, popularidad, Z, ,_|_]):- 
+mensajes([deseo, agregar, el, anime, X, del, genero, G, con, W, de, rating, y, popularidad, Z, _|_]):- 
     generoValido(G, NewG), number(W), W>0, W<6, number(Z), Z>0, Z<11, agregar(X,NewG,W,Z), nl, readln(Y), nl, mensajes(Y).
 
 % Formato invalido, genero.
@@ -462,6 +462,64 @@ mensajes([dime, los,muy,poco, conocidos]):-
     findall(X,popularidad(X,1),X),findall(Y,popularidad(Y,2),Y), concat(Y,X,L), imprimir(L), nl, readln(W), nl, mensajes(W).
 mensajes([dime, los,muy,poco, conocidos,_|_]):- 
     findall(X,popularidad(X,1),X),findall(Y,popularidad(Y,2),Y), concat(Y,X,L), imprimir(L), nl, readln(W), nl, mensajes(W).
+
+mensajes([quisiera, que, me, recomiendes, animes]):- 
+    write("Yo se mucho de animes, dime que genero te gusta"), nl, readln(W), nl, mensajes(W).
+mensajes([quisiera, que, me, recomiendes, animes,_|_]):- 
+    write("Yo se mucho de animes, dime que genero te gusta"), nl, readln(W), nl, mensajes(W).
+mensajes([quisiera, que, me, recomiendes, X]):- 
+    write("Yo no se de "), write(X), write(", pregunta otra cosa"), nl, readln(W), nl, mensajes(W).
+mensajes([quisiera, que, me, recomiendes, X, _|_]):- 
+    write("Yo no se de "), write(X), write(", pregunta otra cosa"), nl, readln(W), nl, mensajes(W).
+
+mensajes([cual, es, tu, anime, favorito]):-
+    write("InuYasha es mi favorito, pero tambien hay otros buenos"),  nl, readln(W), nl, mensajes(W).
+mensajes([cual, es, tu, anime, favorito,_|_]):-
+    write("InuYasha es mi favorito, pero tambien hay otros buenos"),  nl, readln(W), nl, mensajes(W).
+mensajes([cual, es, tu, genero, favorito]):-
+    write("Depende de mi estado de animo"),  nl, readln(W), nl, mensajes(W).
+mensajes([cual, es, tu, genero, favorito,_|_]):-
+    write("Depende de mi estado de animo"),  nl, readln(W), nl, mensajes(W).
+mensajes([cual, es, tu, X, favorita]):-
+    write("Ummm.."),write(X), write("? No tengo favoritos"),  nl, readln(W), nl, mensajes(W).
+mensajes([cual, es, tu, X, favorita,_|_]):-
+    write("Ummm.."),write(X), write("? No tengo favoritos"),  nl, readln(W), nl, mensajes(W).
+mensajes([cual, es, tu, X, favorito]):-
+    write("Ummm.."),write(X), write("? No tengo favoritos"),  nl, readln(W), nl, mensajes(W).
+mensajes([cual, es, tu, X, favorito,_|_]):-
+    write("Ummm.."),write(X), write("? No tengo favoritos"),  nl, readln(W), nl, mensajes(W).
+mensajes([cual, es, tu, _|_]):- 
+    write("No preguntes por mi, pregunta por el anime"),  nl, readln(W), nl, mensajes(W).
+mensajes([dime, tu, _|_]):- 
+    write("No preguntes por mi, pregunta por el anime"),  nl, readln(W), nl, mensajes(W).
+mensajes([me, quiero, ir]):- 
+    write("No te vayas, eres pana"),  nl, readln(W), nl, mensajes(W).
+mensajes([me, quiero, ir,_|_]):- 
+    write("No te vayas, eres pana"),  nl, readln(W), nl, mensajes(W).
+mensajes([me, quiero, morir]):- 
+    write("Chamo tu eres de los mios"),  nl, readln(W), nl, mensajes(W).
+mensajes([me, quiero, morir,_|_]):- 
+    write("Chamo tu eres de los mios"),  nl, readln(W), nl, mensajes(W).
+mensajes([dame,_|_]):- 
+    write("No te puedo dar nada"),  nl, readln(W), nl, mensajes(W).
+mensajes([si,_|_]):- 
+    write("si, what?"),  nl, readln(W), nl, mensajes(W).
+mensajes([no,_|_]):- 
+    write("no, what?"),  nl, readln(W), nl, mensajes(W).
+mensajes([hola]):-
+    write("Hola mi amigo"),  nl, readln(W), nl, mensajes(W).
+mensajes([hi]):-
+    write("Hola mi amigo"),  nl, readln(W), nl, mensajes(W).
+mensajes([hey]):-
+    write("Hola mi amigo"),  nl, readln(W), nl, mensajes(W).
+mensajes([hola,_|_]):-
+    write("Hola mi amigo"),  nl, readln(W), nl, mensajes(W).
+mensajes([hi,_|_]):-
+    write("Hola mi amigo"),  nl, readln(W), nl, mensajes(W).
+mensajes([hey,_|_]):-
+    write("Hola mi amigo"),  nl, readln(W), nl, mensajes(W).
+mensajes([chama,_|_]):-
+    write("chama ni idea"),  nl, readln(W), nl, mensajes(W).
 
 /* Consultas segun genero */
 mensajes([me, gusta,el,G]):- 
