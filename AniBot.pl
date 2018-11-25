@@ -405,4 +405,4 @@ mensajes([el, el,genero,que, mas, me, gusta, es, G]):-
 mensajes([salir]).
 
 /* Mensaje de error. */
-mensajes([_]):-write("No entiendo tu consulta, dime otra cosa."), nl, readln(Y), nl, mensajes(Y).
+mensajes(_):-write("No entiendo tu consulta, dime otra cosa."), nl, readln(Y), nl, mensajes(Y).
