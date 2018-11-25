@@ -274,6 +274,9 @@ mensajes([dime,los, animes, del, genero, _, ordenados, de, forma, _, segun, _|_]
 mensajes([cuales, son, los, animes, con, X, estrellas, del, genero, G]):- 
     generoValido(G, NewG), number(X), X>0, X<6, estrellas(X,NewG), nl, readln(Y), nl, mensajes(Y).
 
+mensajes([cuales, son, los, animes, con, X, estrellas, del, genero, G, _|_]):- 
+    generoValido(G, NewG), number(X), X>0, X<6, estrellas(X,NewG), nl, readln(Y), nl, mensajes(Y).
+
 % Formato genero invalido.
 mensajes([cuales, son, los, animes, con, X, estrellas, del, genero, _]):- 
     number(X), X>0, X<6, writeln("No conozco ese genero. Intenta con alguno de estos:"), nl,
@@ -294,7 +297,9 @@ mensajes([ver, animes]):- findall(X, anime(X), X), imprimir(X), nl, readln(Y), n
 mensajes([ver, animes,_|_]):- findall(X, anime(X), X), imprimir(X), nl, readln(Y), nl, mensajes(Y).
 
 /* Preguntas sobre animes poco conocidos: */
-
+mensajes([cuales, son , los, animes, poco, conocidos]):- pocoConocidos(), nl, readln(Y), nl, mensajes(Y).
+mensajes([quiero, saber, cuales, son , los, animes, poco, conocidos]):- pocoConocidos(), nl, readln(Y), nl, mensajes(Y).
+mensajes([dime, cuales, son , los, animes, poco, conocidos]):- pocoConocidos(), nl, readln(Y), nl, mensajes(Y).
 mensajes([cuales, son , los, animes, poco, conocidos, _|_]):- pocoConocidos(), nl, readln(Y), nl, mensajes(Y).
 mensajes([quiero, saber, cuales, son , los, animes, poco, conocidos, _|_]):- pocoConocidos(), nl, readln(Y), nl, mensajes(Y).
 mensajes([dime, cuales, son , los, animes, poco, conocidos, _|_]):- pocoConocidos(), nl, readln(Y), nl, mensajes(Y).
@@ -307,6 +312,14 @@ mensajes([deseo, agregar, el, anime, X, del, genero, G, con, W, de, rating ]):-
 
 % Formato valido, con popularidad.
 mensajes([deseo, agregar, el, anime, X, del, genero, G, con, W, de, rating, y, popularidad, Z ]):- 
+    generoValido(G, NewG), number(W), W>0, W<6, number(Z), Z>0, Z<11, agregar(X,NewG,W,Z), nl, readln(Y), nl, mensajes(Y).
+
+% Formato valido, sin popularidad
+mensajes([deseo, agregar, el, anime, X, del, genero, G, con, W, de, rating,_|_]):- 
+    generoValido(G, NewG), number(W), W>0, W<6, agregar(X,NewG,W,1), nl, readln(Y), nl, mensajes(Y).
+
+% Formato valido, con popularidad.
+mensajes([deseo, agregar, el, anime, X, del, genero, G, con, W, de, rating, y, popularidad, Z, ,_|_]):- 
     generoValido(G, NewG), number(W), W>0, W<6, number(Z), Z>0, Z<11, agregar(X,NewG,W,Z), nl, readln(Y), nl, mensajes(Y).
 
 % Formato invalido, genero.
@@ -400,6 +413,10 @@ mensajes([ver,contador, _|_]):- findall((X,Y), contador(X,Y), L), imprimir(L), n
 mensajes([ver,popularidad]):- findall((X,Y), popularidad(X,Y), L), imprimir(L), nl, readln(W), nl, mensajes(W).
 mensajes([ver,popularidad,_|_]):- findall((X,Y), popularidad(X,Y), L), imprimir(L), nl, readln(W), nl, mensajes(W).
 
+/* Permite ver el rating de todos los animes */
+mensajes([ver,rating]):- findall((X,Y), rating(X,Y), L), imprimir(L), nl, readln(W), nl, mensajes(W).
+mensajes([ver,rating,_|_]):- findall((X,Y), rating(X,Y), L), imprimir(L), nl, readln(W), nl, mensajes(W).
+
 /* Permite ver los generos */
 mensajes([ver,generos]):- findall(X, genero(X), X), imprimir(X), nl, readln(W), nl, mensajes(W).
 
@@ -446,17 +463,26 @@ mensajes([dime, los,muy,poco, conocidos]):-
 mensajes([dime, los,muy,poco, conocidos,_|_]):- 
     findall(X,popularidad(X,1),X),findall(Y,popularidad(Y,2),Y), concat(Y,X,L), imprimir(L), nl, readln(W), nl, mensajes(W).
 
-/*
+/* Consultas segun genero */
 mensajes([me, gusta,el,G]):- 
     generoValido(G, NewG), writeln("Te recomiendo:"),findall((A,Y),generoAnime(A,Y),AnimeWithGenre), 
     foundGenre(NewG, AnimeWithGenre, SpecificAnime),imprimir(SpecificAnime), nl, readln(W), nl, mensajes(W).
 mensajes([me, gusta,el,genero, G]):- 
     generoValido(G, NewG), writeln("Te recomiendo:"),findall((A,Y),generoAnime(A,Y),AnimeWithGenre), 
     foundGenre(NewG, AnimeWithGenre, SpecificAnime),imprimir(SpecificAnime), nl, readln(W), nl, mensajes(W).
-mensajes([el, el,genero,que, mas, me, gusta, es, G]):- 
+mensajes([el,genero,que, mas, me, gusta, es, G]):- 
     generoValido(G, NewG), writeln("Te recomiendo:"),findall((A,Y),generoAnime(A,Y),AnimeWithGenre), 
     foundGenre(NewG, AnimeWithGenre, SpecificAnime),imprimir(SpecificAnime), nl, readln(W), nl, mensajes(W).
-*/
+mensajes([me, gusta,el,G,_|_]):- 
+    generoValido(G, NewG), writeln("Te recomiendo:"),findall((A,Y),generoAnime(A,Y),AnimeWithGenre), 
+    foundGenre(NewG, AnimeWithGenre, SpecificAnime),imprimir(SpecificAnime), nl, readln(W), nl, mensajes(W).
+mensajes([me, gusta,el,genero, G,_|_]):- 
+    generoValido(G, NewG), writeln("Te recomiendo:"),findall((A,Y),generoAnime(A,Y),AnimeWithGenre), 
+    foundGenre(NewG, AnimeWithGenre, SpecificAnime),imprimir(SpecificAnime), nl, readln(W), nl, mensajes(W).
+mensajes([el,genero,que, mas, me, gusta, es, G,_|_]):- 
+    generoValido(G, NewG), writeln("Te recomiendo:"),findall((A,Y),generoAnime(A,Y),AnimeWithGenre), 
+    foundGenre(NewG, AnimeWithGenre, SpecificAnime),imprimir(SpecificAnime), nl, readln(W), nl, mensajes(W).
+
 
 /* Para finalizar el chatbot. */
 mensajes([salir]).
