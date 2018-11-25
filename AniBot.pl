@@ -1,5 +1,7 @@
 :- dynamic anime/1.
-anime(X) :- member(X,["Dragon Ball", "Naruto", "Bleach", "HunterXHunter", "Hamtaro", "Full Metal Alchemist"]).
+anime(X) :- member(X,["Dragon Ball", "Naruto", "Bleach", "HunterXHunter", "Hamtaro", "Full Metal Alchemist",
+    "One Piece","Amnesia", "Tokyo Ghoul", "Fairy Tail", "Shingeki no Kyojin", "Suzumiya Haruhi no Yuuutsu",
+    "Evangelion","Ao Haru Ride", "InuYasha","Sukitte Ii na yo","Death Note"]).
 
 genero(X) :- member(X,["Aventura", "Shoujo", "Shounen", "Kodomo", "Seinen", "Josei", "Ficcion",
                     "Fantasia", "Mecha", "Sobrenatural", "Magia", "Gore"]).
@@ -11,6 +13,17 @@ generoAnime("Bleach",["Shounen", "Sobrenatural"]).
 generoAnime("HunterXHunter",["Seinen", "Aventura"]).
 generoAnime("Hamtaro",["Kodomo"]).
 generoAnime("Full Metal Alchemist",["Shounen", "Magia"]).
+generoAnime("One Piece",["Shounen", "Aventura", "Fantasia"]).
+generoAnime("Amnesia",["Josei", "Fantasia"]).
+generoAnime("Tokyo Ghoul",["Sobrenatural", "Seinen"]).
+generoAnime("Fairy Tail",["Aventura", "Fantasia", "Magia", "Shounen"]).
+generoAnime("Shingeki no Kyojin", ["Gore", "Fantasia", "Shounen"]).
+generoAnime("Suzumiya Haruhi no Yuuutsu", ["Ficcion"]).
+generoAnime("Evangelion", ["Ficcion", "Mecha"]).
+generoAnime("Ao Haru Ride", ["Shoujo"]).
+generoAnime("InuYasha",["Sobrenatural","Shounen","Fantasia","Aventura","Magia"]).
+generoAnime("Sukitte Ii na yo",["Shoujo"]).
+generoAnime("Death Note", ["Shounen","Sobrenatural"]).
 
 :- dynamic rating/2.
 rating("Dragon Ball",3).
@@ -19,6 +32,17 @@ rating("Bleach",4).
 rating("HunterXHunter",5).
 rating("Hamtaro",2).
 rating("Full Metal Alchemist",4).
+rating("One Piece",4).
+rating("Amnesia",3).
+rating("Tokyo Ghoul",4).
+rating("Fairy Tail",4).
+rating("Shingeki no Kyojin",4).
+rating("Suzumiya Haruhi no Yuuutsu",3).
+rating("Evangelion",4).
+rating("Ao Haru Ride",5).
+rating("InuYasha",5).
+rating("Sukitte Ii na yo",3).
+rating("Death Note",5).
 
 :- dynamic popularidad/2.
 popularidad("Dragon Ball",7).
@@ -27,6 +51,17 @@ popularidad("Bleach",8).
 popularidad("HunterXHunter",3).
 popularidad("Hamtaro",10).
 popularidad("Full Metal Alchemist",1).
+popularidad("One Piece",9).
+popularidad("Amnesia",4).
+popularidad("Tokyo Ghoul",6).
+popularidad("Fairy Tail",8).
+popularidad("Shingeki no Kyojin",9).
+popularidad("Suzumiya Haruhi no Yuuutsu", 7).
+popularidad("Evangelion",6).
+popularidad("Ao Haru Ride",8).
+popularidad("InuYasha",10).
+popularidad("Sukitte Ii na yo",7).
+popularidad("Death Note",9).
 
 % found(Anime, Genre, GenreList, Result)
 % Busca Genre en GenreList. 
@@ -155,6 +190,17 @@ contador("Bleach",0).
 contador("HunterXHunter",0).
 contador("Hamtaro",0).
 contador("Full Metal Alchemist",0).
+contador("One Piece",0).
+contador("Amnesia",0).
+contador("Tokyo Ghoul",0).
+contador("Fairy Tail",0).
+contador("Shingeki no Kyojin",0).
+contador("Suzumiya Haruhi no Yuuutsu",0).
+contador("Evangelion",0).
+contador("Ao Haru Ride",0).
+contador("InuYasha",0).
+contador("Sukitte Ii na yo",0).
+contador("Death Note",0).
 
 % Dado un string de anime lo devuelve en el formato deseado 
 :- dynamic cambiarAnime/2.
@@ -164,6 +210,17 @@ cambiarAnime(bleach, "Bleach").
 cambiarAnime(hunterXhunter, "HunterXHunter").
 cambiarAnime(hamtaro, "Hamtaro").
 cambiarAnime(full, "Full Metal Alchemist"). 
+cambiarAnime(one, "One Piece"). 
+cambiarAnime(amnesia, "Amnesia").
+cambiarAnime(tokyo, "Tokyo Ghoul").
+cambiarAnime(fairy,"Fairy Tail").
+cambiarAnime(shingeki,"Shingeki no Kyojin").
+cambiarAnime(suzumiya,"Suzumiya Haruhi no Yuuutsu").
+cambiarAnime(evangelion,"Evangelion").
+cambiarAnime(ao,"Ao Haru Ride").
+cambiarAnime(inuyasha,"InuYasha").
+cambiarAnime(sukitte,"Sukitte Ii na yo").
+cambiarAnime(death,"Death Note").
 
 % Dado un anime lo devuelve en el formato deseado en el caso de que pertenezca a la lista de animes existente 
 animeValido(A, NewA):- cambiarAnime(A, NewA), findall(Anime, anime(Anime), Animes), member(NewA,Animes).
