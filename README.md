@@ -4,13 +4,13 @@ Integrantes:
 - Angélica Acosta 14-10005.
 - Giulianne Tavano 13-11389. 
 
-# Para iniciar con el chatbot, debe realizar los siguientes pasos:
+## Para iniciar con el chatbot, debe realizar los siguientes pasos:
 
 (1) Tener instalado SWI-Prolog.
 (2) Abrir la terminar y escribir: "swipl -S AniBot.pl"
 (3) Escribrir "inicio.", que es el predicado que da inicio al chatbot.
 
-# En el chatbot se pueden realizar consultas de diversos tipos. Los formatos admitidos son los siguientes:
+## En el chatbot se pueden realizar consultas de diversos tipos. Los formatos admitidos son los siguientes:
 
 (1) Para ordenar:
 - dime los animes del genero G ordenados de forma ascendente segun rating 
@@ -85,7 +85,7 @@ Integrantes:
 (15) Salir:
 - salir
 
-# Sobre el diseño
+## Sobre el diseño
 
 El predicado inicio se encarga de ejecutar AniBot. Este llama al predicado recursivo mensajes/1 que se 
 encarga de recibir el input del usuario para ejecutar su consulta y mostrar el output correspondiente.
