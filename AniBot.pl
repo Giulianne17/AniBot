@@ -543,7 +543,7 @@ mensajes([el,genero,que, mas, me, gusta, es, G,_|_]):-
 
 
 /* Para finalizar el chatbot. */
-mensajes([salir]).
+mensajes([salir]):- halt.
 
 /* Mensaje de error. */
 mensajes(_):-write("No entiendo tu consulta, dime otra cosa."), nl, readln(Y), nl, mensajes(Y).

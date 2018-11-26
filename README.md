@@ -10,7 +10,7 @@ Integrantes:
 (2) Abrir la terminar y escribir: "swipl -S AniBot.pl"
 (3) Escribrir "inicio.", que es el predicado que da inicio al chatbot.
 
-En el chatbot se pueden realizar consultas de diversos tipos. Los formatos admitidos son los siguientes:
+# En el chatbot se pueden realizar consultas de diversos tipos. Los formatos admitidos son los siguientes:
 
 (1) Para ordenar:
 - dime los animes del genero G ordenados de forma ascendente segun rating 
@@ -87,9 +87,14 @@ En el chatbot se pueden realizar consultas de diversos tipos. Los formatos admit
 
 # Sobre el diseño
 
-El predicado inicio se encarga de ejecutar AniBot. Este llama al predicado recursivo mensajes/1 que se encarga de recibir el input del usuario para ejecutar su consulta y mostrar el output correspondiente.
+El predicado inicio se encarga de ejecutar AniBot. Este llama al predicado recursivo mensajes/1 que se 
+encarga de recibir el input del usuario para ejecutar su consulta y mostrar el output correspondiente.
 
-Se tienen verificaciones para el input de los generos y los anime, pues para preguntar por ellos deben estar cargados en la base. Estos predicados son generoValido/2 y animeValido/2.
+Se tienen verificaciones para el input de los generos y los anime, pues para preguntar por ellos deben 
+estar cargados en la base. Estos predicados son generoValido/2 y animeValido/2.
 
-Cuando un mensaje del usuario no cumple con las caracteristicas antes mencionadas se muestran mensajes de error.
+Cuando un mensaje del usuario no cumple con las caracteristicas antes mencionadas se muestran mensajes 
+de error.
 
+El predicado consulta/1 mantiene un contador de la cantidad de consultas que se le realizan a un anime
+en particular, a fin de poder aumentar la popularidad cuando se hacen muchas consultas.
