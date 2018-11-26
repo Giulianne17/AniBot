@@ -4,7 +4,7 @@ Integrantes:
 - Angélica Acosta 14-10005.
 - Giulianne Tavano 13-11389. 
 
-Para iniciar con el chatbot, debe realizar los siguientes pasos:
+# Para iniciar con el chatbot, debe realizar los siguientes pasos:
 
 (1) Tener instalado SWI-Prolog.
 (2) Abrir la terminar y escribir: "swipl -S AniBot.pl"
@@ -26,7 +26,7 @@ En el chatbot se pueden realizar consultas de diversos tipos. Los formatos admit
 (3) Ver todos los animes:
 - ver animes
 
-(4) Ver los animes poco conocidos:
+(4) Ver los animes poco conocidos: (Se consideran animes poco conocidos aquellos que tengan 4 o 5 estrellas y popularidad de 1 a 5.)
 - cuales son los animes poco conocidos
 - quiero saber cuales son los animes poco conocidos
 - dime cuales son los animes poco conocidos
@@ -84,3 +84,12 @@ En el chatbot se pueden realizar consultas de diversos tipos. Los formatos admit
 
 (15) Salir:
 - salir
+
+# Sobre el diseño
+
+El predicado inicio se encarga de ejecutar AniBot. Este llama al predicado recursivo mensajes/1 que se encarga de recibir el input del usuario para ejecutar su consulta y mostrar el output correspondiente.
+
+Se tienen verificaciones para el input de los generos y los anime, pues para preguntar por ellos deben estar cargados en la base. Estos predicados son generoValido/2 y animeValido/2.
+
+Cuando un mensaje del usuario no cumple con las caracteristicas antes mencionadas se muestran mensajes de error.
+
